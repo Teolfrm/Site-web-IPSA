@@ -1,0 +1,201 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+    /* Image de fond fixe couvrant tout l'écran */
+    background: #0d1117 url('fond.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: #c9d1d9;
+    line-height: 1.6;
+    padding: 0;
+}
+
+.container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 30px 20px;
+    /* Effet de transparence sombre pour rendre le texte lisible sur l'image */
+    background-color: rgba(13, 17, 23, 0.85);
+    border-radius: 12px;
+    backdrop-filter: blur(8px);
+    border: 1px solid #30363d;
+}
+
+/* --- HEADER / PROFIL --- */
+header {
+    text-align: center;
+    padding: 20px 0 30px 0;
+    border-bottom: 1px solid #30363d;
+    margin-bottom: 40px;
+}
+
+header h1 {
+    font-size: 2.8rem;
+    color: #ffffff;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+}
+
+header .subtitle {
+    font-size: 1.2rem;
+    color: #58a6ff;
+    font-weight: 500;
+    margin-bottom: 20px;
+}
+
+header .bio {
+    max-width: 750px;
+    margin: 0 auto 25px auto;
+    font-size: 1.05rem;
+    color: #8b949e;
+}
+
+.contact-bar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px 25px;
+    font-size: 0.95rem;
+    color: #c9d1d9;
+}
+
+.contact-bar a {
+    color: #58a6ff;
+    text-decoration: none;
+}
+
+.contact-bar a:hover {
+    text-decoration: underline;
+}
+
+/* --- SECTIONS --- */
+section {
+    margin-bottom: 50px;
+}
+
+h2 {
+    font-size: 1.6rem;
+    color: #ffffff;
+    border-bottom: 2px solid #21262d;
+    padding-bottom: 8px;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+h2::before {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 20px;
+    background-color: #58a6ff;
+    border-radius: 2px;
+}
+
+/* --- CARDS --- */
+.card {
+    background-color: rgba(22, 27, 34, 0.9);
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    padding: 20px 25px;
+    margin-bottom: 20px;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    border-color: #58a6ff;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+}
+
+.card-title {
+    font-size: 1.2rem;
+    color: #f0f6fc;
+    font-weight: 600;
+}
+
+.card-tag {
+    background-color: #1f6feb22;
+    color: #58a6ff;
+    border: 1px solid #1f6feb44;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+}
+
+.card-subtitle {
+    color: #8b949e;
+    font-size: 0.95rem;
+    margin-bottom: 12px;
+}
+
+.card-desc {
+    color: #c9d1d9;
+    font-size: 0.95rem;
+}
+
+/* --- SKILLS & DETAILS --- */
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.skill-box {
+    background-color: rgba(22, 27, 34, 0.9);
+    border: 1px solid #30363d;
+    padding: 15px;
+    border-radius: 6px;
+}
+
+.skill-box h4 {
+    color: #58a6ff;
+    margin-bottom: 8px;
+    font-size: 1rem;
+}
+
+.skill-box p {
+    font-size: 0.9rem;
+    color: #8b949e;
+}
+
+/* --- PASSIONS --- */
+.passions-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.passion-badge {
+    background-color: rgba(33, 38, 45, 0.9);
+    border: 1px solid #30363d;
+    color: #f0f6fc;
+    padding: 10px 18px;
+    border-radius: 20px;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* --- FOOTER --- */
+footer {
+    text-align: center;
+    padding: 30px 0 10px 0;
+    border-top: 1px solid #30363d;
+    color: #8b949e;
+    font-size: 0.85rem;
+}

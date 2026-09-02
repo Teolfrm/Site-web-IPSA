@@ -3,150 +3,137 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Téo Leferme - Élève-Ingénieur Aéronautique & Spatial</title>
-    <!-- Liaison avec le fichier CSS externe -->
+    <title>Téo Leferme — Portfolio Ingénieur Aéro</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+    <!-- BARRE DE NAVIGATION (STYLE SMD.AERO) -->
+    <nav class="navbar">
+        <div class="logo">TÉO LEFERME <span>.AERO</span></div>
+        <ul class="nav-links">
+            <li><a href="#accueil">Accueil</a></li>
+            
+            <!-- FENÊTRE DÉROULANTE (PROJETS) -->
+            <li class="dropdown">
+                <a href="#projets">Projets ▾</a>
+                <ul class="dropdown-menu">
+                    <li><a href="#proj-navette">🚀 Navette Spatiale (CAO/CFD)</a></li>
+                    <li><a href="#proj-sousmarin">🤖 Sous-Marin Autonome (ML)</a></li>
+                    <li><a href="#proj-bea">✈️ Enquête Incident BEA</a></li>
+                </ul>
+            </li>
+
+            <li><a href="#exp">Expériences</a></li>
+            <li><a href="#formation">Formation</a></li>
+            <li><a href="mailto:teo.leferme@ipsa.fr" class="btn-contact">Me Contacter</a></li>
+        </ul>
+    </nav>
+
     <div class="container">
 
-        <!-- 1. NOM, PRENOM & DESCRIPTION -->
-        <header>
-            <h1>TÉO LEFERME</h1>
-            <p class="subtitle">Élève-Ingénieur en 5e année – Spécialité Aéronautique & Spatial</p>
-            <p class="bio">
-                Actuellement à la recherche d'un stage de 6 mois pour m'investir pleinement dans les projets de votre équipe, apporter une réelle valeur ajoutée, et poursuivre idéalement cette collaboration au-delà du stage.
-            </p>
+        <!-- 1. ACCUEIL : PROFIL ET RÉSUMÉ -->
+        <section id="accueil" class="hero">
+            <div class="hero-card">
+                <h1>Téo Leferme</h1>
+                <div class="subtitle">Élève-Ingénieur Aéronautique & Spatial (5e année)</div>
+                <p>
+                    Passionné par la conception aéronautique et le secteur spatial, je suis à la recherche d'un **stage de fin d'études de 6 mois** à compter de 2026. Mon objectif est d'apporter une réelle valeur ajoutée au sein d'une équipe d'ingénierie et d'évoluer vers une collaboration à long terme.
+                </p>
+            </div>
             
-            <div class="contact-bar">
-                <span>📍 Toulouse, France</span>
-                <span>📞 +33 6 77 62 75 94</span>
-                <span>✉️ <a href="mailto:teo.leferme@ipsa.fr">teo.leferme@ipsa.fr</a></span>
-                <span>🔗 <a href="https://linkedin.com" target="_blank">LinkedIn</a></span>
-                <span>🚗 Permis B (véhiculé)</span>
-            </div>
-        </header>
-
-        <!-- 2. EXPERIENCES -->
-        <section id="experiences">
-            <h2>Expériences Professionnelles</h2>
-
-            <div class="card">
-                <div class="card-header">
-                    <span class="card-title">Ingénieur Conception et Certification</span>
-                    <span class="card-tag">3 mois (2026) | Italie</span>
-                </div>
-                <div class="card-subtitle">SMD.aero — Stage à l'étranger</div>
-                <p class="card-desc">Conception de pièces d'avion sur CATIA et mise en place de documents de certification selon la réglementation EASA.</p>
-            </div>
-
-            <div class="card">
-                <div class="card-header">
-                    <span class="card-title">Agent des Impôts</span>
-                    <span class="card-tag">1 mois (2025)</span>
-                </div>
-                <div class="card-subtitle">DDFIP — Centre des impôts fonciers (CDD)</div>
-                <p class="card-desc">Référencement de plans cadastraux et fonctions d'agent sur le secteur professionnel.</p>
-            </div>
-
-            <div class="card">
-                <div class="card-header">
-                    <span class="card-title">Tuteur d'Élèves</span>
-                    <span class="card-tag">Pendant le cursus ingénieur</span>
-                </div>
-                <div class="card-subtitle">Accompagnement pédagogique</div>
-                <p class="card-desc">Soutien académique et accompagnement méthodologique pour des élèves durant les études.</p>
-            </div>
-
-            <div class="card">
-                <div class="card-header">
-                    <span class="card-title">Câbleur-Monteur</span>
-                    <span class="card-tag">2024 & 2019 (2 mois total)</span>
-                </div>
-                <div class="card-subtitle">DYNAMELEC — Stage ouvrier</div>
-                <p class="card-desc">Travaux d'assemblage et de câblage d'armoires électriques et d'automates.</p>
-            </div>
-
-            <div class="card">
-                <div class="card-header">
-                    <span class="card-title">Agent Agricole</span>
-                    <span class="card-tag">Saisonnier</span>
-                </div>
-                <div class="card-subtitle">Missions d'été</div>
-                <p class="card-desc">Entretien et travaux d'espaces verts chez des particuliers.</p>
+            <div class="hero-card">
+                <span class="card-tag">INFORMATIONS CLEFS</span>
+                <p style="margin-top:10px;"><strong>📍 Localisation :</strong> Toulouse (Mobilité possible)</p>
+                <p><strong>🎓 École :</strong> IPSA (Institut Polytechnique des Sciences Avancées)</p>
+                <p><strong>🌐 Langues :</strong> Français (Courant), Anglais (TOEIC 840), Espagnol</p>
+                <p><strong>🚗 Permis :</strong> Permis B (Véhiculé)</p>
             </div>
         </section>
 
-        <!-- 3. ECOLE & FORMATION -->
-        <section id="formation">
-            <h2>École & Formation</h2>
-
-            <div class="card">
-                <div class="card-header">
-                    <span class="card-title">Institut Polytechnique des Sciences Avancées (IPSA)</span>
-                    <span class="card-tag">2022 - 2027</span>
-                </div>
-                <div class="card-subtitle">Diplôme d'Ingénieur Aéronautique & Spatial</div>
-                <p class="card-desc">Dernière année du cycle ingénieur à la suite d'une classe préparatoire intégrée.</p>
-            </div>
-
-            <div class="card">
-                <div class="card-header">
-                    <span class="card-title">Lycée Gaspard-Monge</span>
-                    <span class="card-tag">2019 - 2022</span>
-                </div>
-                <div class="card-subtitle">Baccalauréat Général</div>
-                <p class="card-desc">Spécialités Mathématiques & Physique-Chimie | Option Euro-Anglais & Maths Expertes.</p>
-            </div>
-
-            <h3 style="color: #ffffff; margin: 25px 0 15px 0; font-size: 1.1rem;">Compétences Techniques & Langues</h3>
-            <div class="skills-grid">
-                <div class="skill-box">
-                    <h4>CAO / CFD / FEM</h4>
-                    <p>CATIA V5, KeyShot, STAR CCM+, Patran-Nastran, AutoCad (initiation)</p>
-                </div>
-                <div class="skill-box">
-                    <h4>Programmation & Outils</h4>
-                    <p>Python, Matlab, LaTeX, Adobe Premiere Pro, Pack Office</p>
-                </div>
-                <div class="skill-box">
-                    <h4>Langues</h4>
-                    <p><strong>Anglais :</strong> Courant (TOEIC 840) — Semestre en Malaisie & Stage en Italie<br><strong>Espagnol :</strong> Notions</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- 4. PROJETS -->
+        <!-- 2. PROJETS (AVEC ANCRES POUR LE MENU DÉROULANT) -->
         <section id="projets">
             <h2>Projets Majeurs</h2>
+            <div class="card-grid">
+                
+                <div class="card" id="proj-navette">
+                    <span class="card-tag">CAO & CFD</span>
+                    <h3>Navette Spatiale</h3>
+                    <div class="card-subtitle">Modélisation & Analyse Aérodynamique</div>
+                    <p>Construction et dimensionnement d'une navette spatiale sur CATIA V5 suivi d'une analyse thermique et aérodynamique sur STAR CCM+.</p>
+                </div>
 
-            <div class="card">
-                <div class="card-title" style="margin-bottom: 8px;">🚀 Navette Spatiale (CAO & CFD)</div>
-                <p class="card-desc">Construction modélisée et analyse aérodynamique/thermique d'une navette spatiale via CATIA et STAR CCM+.</p>
-            </div>
+                <div class="card" id="proj-sousmarin">
+                    <span class="card-tag">IA & STRUCTURE</span>
+                    <h3>Sous-Marin Autonome</h3>
+                    <div class="card-subtitle">Machine Learning & Conception</div>
+                    <p>Conception structurelle complète d'un sous-marin autonome piloté par un modèle de Machine Learning pour l'optimisation de la trajectoire.</p>
+                </div>
 
-            <div class="card">
-                <div class="card-title" style="margin-bottom: 8px;">🤖 Sous-Marin Autonome & Machine Learning</div>
-                <p class="card-desc">Construction complète d'un sous-marin autonome, réalisation de l'analyse structurelle et entraînement d'un modèle de Machine Learning dédié à la navigation.</p>
-            </div>
+                <div class="card" id="proj-bea">
+                    <span class="card-tag">SÉCURITÉ AÉRIENNE</span>
+                    <h3>Enquête Incident BEA</h3>
+                    <div class="card-subtitle">Analyse Technique</div>
+                    <p>Reconstitution et analyse approfondie d'un événement aéronautique en appliquant les méthodologies officielles d'enquête de sécurité.</p>
+                </div>
 
-            <div class="card">
-                <div class="card-title" style="margin-bottom: 8px;">✈️ Enquête Incident Aéronautique (BEA)</div>
-                <p class="card-desc">Analyse méthodologique et reconstitution technique d'un incident aéronautique selon les standards du BEA.</p>
             </div>
         </section>
 
-        <!-- 5. PASSIONS -->
-        <section id="passions">
-            <h2>Passions & Loisirs</h2>
-            <div class="passions-list">
-                <div class="passion-badge">🚴‍♂️ Vélo (9 ans en club)</div>
-                <div class="passion-badge">🕳️ Spéléologie</div>
-                <div class="passion-badge">🖨️ Impression 3D & Bricolage</div>
-                <div class="passion-badge">🏔️ Alpinisme</div>
-                <div class="passion-badge">🥾 Randonnée</div>
-                <div class="passion-badge">🩹 Premier Secours Citoyen (PSC1)</div>
+        <!-- 3. EXPÉRIENCES PROFESSIONNELLES -->
+        <section id="exp">
+            <h2>Expériences Professionnelles</h2>
+            <div class="card-grid">
+
+                <div class="card">
+                    <span class="card-tag">2026 — 3 MOIS (ITALIE)</span>
+                    <h3>Ingénieur Conception & Certification</h3>
+                    <div class="card-subtitle">SMD.aero</div>
+                    <p>Conception de pièces d'avions légers sur CATIA et élaboration de dossiers de certification réglementaires conformes aux exigences EASA.</p>
+                </div>
+
+                <div class="card">
+                    <span class="card-tag">2025 — CDD</span>
+                    <h3>Agent des Impôts</h3>
+                    <div class="card-subtitle">DDFIP</div>
+                    <p>Référencement de plans cadastraux et gestion des données foncières professionnelles.</p>
+                </div>
+
+                <div class="card">
+                    <span class="card-tag">2019 & 2024</span>
+                    <h3>Câbleur-Monteur</h3>
+                    <div class="card-subtitle">DYNAMELEC</div>
+                    <p>Montage et câblage d'armoires électriques industrielles et d'automates.</p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 4. FORMATION & COMPÉTENCES -->
+        <section id="formation">
+            <h2>Formation & Compétences</h2>
+            <div class="card-grid">
+
+                <div class="card">
+                    <span class="card-tag">2022 — 2027</span>
+                    <h3>Diplôme d'Ingénieur Aéronautique</h3>
+                    <div class="card-subtitle">IPSA Toulouse</div>
+                    <p>Cycle ingénieur spécialisé en ingénierie des véhicules spatiaux et aéronautiques.</p>
+                </div>
+
+                <div class="card">
+                    <span class="card-tag">LOGICIELS & CAO</span>
+                    <h3>Outils Techniques</h3>
+                    <div class="badge-container">
+                        <span class="badge">CATIA V5</span>
+                        <span class="badge">STAR CCM+</span>
+                        <span class="badge">Patran / Nastran</span>
+                        <span class="badge">AutoCAD</span>
+                        <span class="badge">Python</span>
+                        <span class="badge">Matlab</span>
+                    </div>
+                </div>
+
             </div>
         </section>
 

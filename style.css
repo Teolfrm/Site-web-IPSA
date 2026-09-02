@@ -12,7 +12,7 @@ body {
     padding-top: 80px;
 }
 
-/* --- NAVIGATION (Style SMD.aero) --- */
+/* --- NAVIGATION --- */
 .navbar {
     position: fixed;
     top: 0;
@@ -60,7 +60,7 @@ body {
     color: #ffffff;
 }
 
-/* MENU DÉROULANT (DROPDOWN) */
+/* MENU DÉROULANT */
 .dropdown {
     position: relative;
 }

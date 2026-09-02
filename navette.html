@@ -9,7 +9,7 @@
     <!-- Script Google Model-Viewer pour la 3D -->
     <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
     
-    <!-- Styles spécifiques pour passer les détails en bleu IPSA (#00a8ff) -->
+    <!-- Styles spécifiques bleu IPSA (#00a8ff) et carrousel d'images -->
     <style>
         .card-tag {
             background: rgba(0, 168, 255, 0.15) !important;
@@ -24,6 +24,98 @@
         }
         .btn-contact:hover {
             background-color: #0086cc !important;
+        }
+
+        /* --- STYLES CARROUSEL D'IMAGES --- */
+        .carousel-section {
+            margin-top: 40px;
+            margin-bottom: 40px;
+        }
+
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            overflow: hidden;
+            border-radius: 12px;
+            border: 1px solid #30363d;
+            background-color: #0d1117;
+        }
+
+        .carousel-track {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            width: 100%;
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+            height: 420px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .carousel-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Boutons Précédent / Suivant */
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(22, 27, 34, 0.8);
+            color: #00a8ff;
+            border: 1px solid #30363d;
+            font-size: 1.5rem;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 10;
+            transition: background 0.2s, color 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .carousel-btn:hover {
+            background: #00a8ff;
+            color: #ffffff;
+        }
+
+        .carousel-btn.prev {
+            left: 15px;
+        }
+
+        .carousel-btn.next {
+            right: 15px;
+        }
+
+        /* Indicateurs (points en bas) */
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #30363d;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .dot.active {
+            background-color: #00a8ff;
         }
     </style>
 </head>
@@ -75,7 +167,7 @@
                 <h3 style="margin-bottom: 15px;">Visualisation 3D</h3>
                 
                 <model-viewer 
-                    src="ImageToStl.com_Spaceship+position+decollage.glb" 
+                    src="./navette.glb" 
                     alt="Modèle 3D Navette Spatiale" 
                     auto-rotate 
                     camera-controls 
@@ -89,12 +181,94 @@
 
         </div>
 
+        <!-- Section Galerie / Carrousel à 5 images -->
+        <div class="card carousel-section">
+            <span class="card-tag">GALERIE DU PROJET</span>
+            <h3 style="margin-bottom: 20px;">Captures & Rendus CAO / CFD</h3>
+
+            <div class="carousel-container">
+                <button class="carousel-btn prev" onclick="moveSlide(-1)">&#10094;</button>
+                <button class="carousel-btn next" onclick="moveSlide(1)">&#10095;</button>
+
+                <div class="carousel-track" id="carouselTrack">
+                    <div class="carousel-slide">
+                        <img src="navette-1.jpg" alt="Rendu CAO Navette Vue 1">
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="navette-2.jpg" alt="Simulation CFD Pression">
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="navette-3.jpg" alt="Analyse Thermique Rentrée">
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="navette-4.jpg" alt="Maillage & Structuration">
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="navette-5.jpg" alt="Vue d'ensemble Assemblage">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Indicateurs de position -->
+            <div class="carousel-dots">
+                <span class="dot active" onclick="currentSlide(0)"></span>
+                <span class="dot" onclick="currentSlide(1)"></span>
+                <span class="dot" onclick="currentSlide(2)"></span>
+                <span class="dot" onclick="currentSlide(3)"></span>
+                <span class="dot" onclick="currentSlide(4)"></span>
+            </div>
+        </div>
+
         <p style="margin-top: 20px;"><a href="projets.html" style="color: #00a8ff; text-decoration: none;">← Retour à la liste des projets</a></p>
 
         <footer>
             <p>© 2026 Téo Leferme — Portfolio</p>
         </footer>
     </div>
+
+    <!-- Script JavaScript pour le défilement automatique et manuel du carrousel -->
+    <script>
+        let currentIndex = 0;
+        const slides = document.querySelectorAll('.carousel-slide');
+        const dots = document.querySelectorAll('.dot');
+        const track = document.getElementById('carouselTrack');
+        const totalSlides = slides.length;
+        let autoSlideInterval;
+
+        function updateCarousel() {
+            track.style.transform = `translateX(-${currentIndex * 100}%)`;
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentIndex);
+            });
+        }
+
+        function moveSlide(direction) {
+            currentIndex = (currentIndex + direction + totalSlides) % totalSlides;
+            updateCarousel();
+            resetAutoSlide();
+        }
+
+        function currentSlide(index) {
+            currentIndex = index;
+            updateCarousel();
+            resetAutoSlide();
+        }
+
+        function startAutoSlide() {
+            autoSlideInterval = setInterval(() => {
+                currentIndex = (currentIndex + 1) % totalSlides;
+                updateCarousel();
+            }, 4000); // Change d'image toutes les 4 secondes
+        }
+
+        function resetAutoSlide() {
+            clearInterval(autoSlideInterval);
+            startAutoSlide();
+        }
+
+        // Lancement du défilement automatique au chargement
+        startAutoSlide();
+    </script>
 
 </body>
 </html>

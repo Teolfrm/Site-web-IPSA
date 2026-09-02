@@ -4,15 +4,81 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fusée Expérimentale — Téo Leferme</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./style.css">
     
     <!-- Script Google Model-Viewer pour l'affichage 3D -->
     <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
+
+    <!-- Styles spécifiques bleu IPSA (#00a8ff) et disposition 3 colonnes -->
+    <style>
+        .card-tag {
+            background: rgba(0, 168, 255, 0.15) !important;
+            color: #00a8ff !important;
+        }
+        .card:hover {
+            border-color: #00a8ff !important;
+        }
+        .btn-contact {
+            background-color: #00a8ff !important;
+            color: #ffffff !important;
+        }
+        .btn-contact:hover {
+            background-color: #0086cc !important;
+        }
+
+        /* Adaptation de la grille principale en 3 colonnes flexibles */
+        .hero {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto; /* La 3e colonne s'adapte à la largeur de l'image */
+            gap: 20px;
+            align-items: start;
+        }
+
+        /* Conteneur d'image ajusté à la taille de la photo */
+        .photo-card {
+            display: flex;
+            flex-direction: column;
+            width: fit-content;
+            max-width: 320px;
+        }
+
+        .photo-container {
+            height: 380px; /* Même hauteur que le visualiseur 3D */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #0d1117;
+            border-radius: 8px;
+            border: 1px solid #30363d;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+
+        .photo-container img {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            object-fit: contain; /* L'image garde ses proportions sans être coupée */
+            border-radius: 4px;
+        }
+
+        /* Passage en 1 seule colonne sur mobile */
+        @media (max-width: 992px) {
+            .hero {
+                grid-template-columns: 1fr;
+            }
+            .photo-card {
+                width: 100%;
+                max-width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
 
     <nav class="navbar">
-        <a href="index.html" class="logo">TÉO LEFERME </span></a>
+        <a href="index.html" class="logo">TÉO LEFERME</a>
         <ul class="nav-links">
             <li><a href="index.html">Accueil</a></li>
             <li class="dropdown">
@@ -31,12 +97,12 @@
     </nav>
 
     <div class="container">
-        <h1 class="page-title">🚀 Fusée Expérimentale</h1>
+        <h1 class="page-title">Fusée Expérimentale</h1>
 
-        <!-- Grille à 2 colonnes (Texte à gauche / 3D à droite) -->
+        <!-- Grille à 3 colonnes (Texte / 3D / Photo) -->
         <div class="hero">
             
-            <!-- Colonne de gauche : Informations du projet -->
+            <!-- Colonne 1 : Informations du projet -->
             <div class="card">
                 <span class="card-tag">AÉROSPATIALE & PROPULSION — IPSA</span>
                 <p style="margin-top: 15px;">
@@ -51,14 +117,14 @@
                 </ul>
             </div>
 
-            <!-- Colonne de droite : Visualisation 3D -->
+            <!-- Colonne 2 : Visualisation 3D -->
             <div class="card" style="display: flex; flex-direction: column; justify-content: center;">
                 <span class="card-tag">MODÈLE 3D INTERACTIF</span>
                 <h3 style="margin-bottom: 15px;">Visualisation 3D</h3>
                 
                 <model-viewer 
-                    src="fusee.glb" 
-                    alt="Modèle 3D" 
+                    src="./fusee.glb" 
+                    alt="Modèle 3D Fusée Expérimentale" 
                     auto-rotate 
                     camera-controls 
                     shadow-intensity="2" 
@@ -69,11 +135,21 @@
                 </model-viewer>
             </div>
 
+            <!-- Colonne 3 : Petite photo à droite ajustée à la taille du fichier -->
+            <div class="card photo-card">
+                <span class="card-tag">APERÇU RÉEL</span>
+                <h3 style="margin-bottom: 15px;">Prototype</h3>
+                
+                <div class="photo-container">
+                    <img src="untitled.202.png" alt="Photo de la Fusée Expérimentale">
+                </div>
+            </div>
+
         </div>
 
         
         <footer>
-            <p>© 2026 Téo Leferme — Portfolio </p>
+            <p>© 2026 Téo Leferme — Portfolio</p>
         </footer>
     </div>
 

@@ -6,8 +6,8 @@
 
 body {
     font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
-    /* Image de fond fixe couvrant tout l'écran */
-    background: #0d1117 url('fond.jpg') no-repeat center center fixed;
+    /* L'image défile avec la page (scroll) et est alignée par le haut */
+    background: #0d1117 url('fond.jpg') no-repeat center top scroll;
     background-size: cover;
     color: #c9d1d9;
     line-height: 1.6;
@@ -18,7 +18,7 @@ body {
     max-width: 900px;
     margin: 40px auto;
     padding: 30px 20px;
-    /* Effet de transparence sombre pour rendre le texte lisible sur l'image */
+    /* Effet de transparence sombre pour garantir la lisibilité du texte */
     background-color: rgba(13, 17, 23, 0.85);
     border-radius: 12px;
     backdrop-filter: blur(8px);

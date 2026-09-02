@@ -3,144 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Téo Leferme — Portfolio Ingénieur Aéro</title>
+    <title>Téo Leferme — Accueil</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- BARRE DE NAVIGATION (STYLE SMD.AERO) -->
     <nav class="navbar">
-        <div class="logo">TÉO LEFERME <span>.AERO</span></div>
+        <a href="index.html" class="logo">TÉO LEFERME <span>.AERO</span></a>
         <ul class="nav-links">
-            <li><a href="#accueil">Accueil</a></li>
-            
-            <!-- FENÊTRE DÉROULANTE (PROJETS) -->
+            <li><a href="index.html" class="active">Accueil</a></li>
             <li class="dropdown">
-                <a href="#projets">Projets ▾</a>
+                <a href="projets.html">Projets ▾</a>
                 <ul class="dropdown-menu">
-                    <li><a href="#proj-navette">🚀 Navette Spatiale (CAO/CFD)</a></li>
-                    <li><a href="#proj-sousmarin">🤖 Sous-Marin Autonome (ML)</a></li>
-                    <li><a href="#proj-bea">✈️ Enquête Incident BEA</a></li>
+                    <li><a href="projets.html#navette">🚀 Navette Spatiale</a></li>
+                    <li><a href="projets.html#sousmarin">🤖 Sous-Marin Autonome</a></li>
+                    <li><a href="projets.html#bea">✈️ Enquête Incident BEA</a></li>
                 </ul>
             </li>
-
-            <li><a href="#exp">Expériences</a></li>
-            <li><a href="#formation">Formation</a></li>
+            <li><a href="experiences.html">Expériences</a></li>
+            <li><a href="formation.html">Formation</a></li>
             <li><a href="mailto:teo.leferme@ipsa.fr" class="btn-contact">Me Contacter</a></li>
         </ul>
     </nav>
 
     <div class="container">
-
-        <!-- 1. ACCUEIL : PROFIL ET RÉSUMÉ -->
-        <section id="accueil" class="hero">
-            <div class="hero-card">
+        <section class="hero">
+            <div class="card" style="margin-bottom:0;">
                 <h1>Téo Leferme</h1>
-                <div class="subtitle">Élève-Ingénieur Aéronautique & Spatial (5e année)</div>
+                <div class="card-subtitle" style="color:#f39c12; font-weight:600; font-size:1.05rem;">
+                    Élève-Ingénieur Aéronautique & Spatial (5e année)
+                </div>
                 <p>
-                    Passionné par la conception aéronautique et le secteur spatial, je suis à la recherche d'un **stage de fin d'études de 6 mois** à compter de 2026. Mon objectif est d'apporter une réelle valeur ajoutée au sein d'une équipe d'ingénierie et d'évoluer vers une collaboration à long terme.
+                    Recherche d'un **stage de 6 mois** à partir de 2026. Passionné par la conception aéronautique et spatiale, mon objectif est de m'investir pleinement dans vos projets, apporter une valeur ajoutée et poursuivre idéalement sur une collaboration durable.
                 </p>
             </div>
             
-            <div class="hero-card">
-                <span class="card-tag">INFORMATIONS CLEFS</span>
-                <p style="margin-top:10px;"><strong>📍 Localisation :</strong> Toulouse (Mobilité possible)</p>
-                <p><strong>🎓 École :</strong> IPSA (Institut Polytechnique des Sciences Avancées)</p>
-                <p><strong>🌐 Langues :</strong> Français (Courant), Anglais (TOEIC 840), Espagnol</p>
-                <p><strong>🚗 Permis :</strong> Permis B (Véhiculé)</p>
+            <div class="card" style="margin-bottom:0;">
+                <span class="card-tag">PROFIL & MOBILITÉ</span>
+                <p style="margin-top:10px;"><strong>📍 Adresse principale :</strong> Toulouse (31200)</p>
+                <p><strong>🏠 Hébergement possible :</strong> Ayn (73), Gallardon (28), Essigny-le-Grand (02)</p>
+                <p><strong>🌍 Mobilité :</strong> Internationale & Permis B (véhiculé)</p>
+                <p><strong>📞 Téléphone :</strong> +33 6 77 62 75 94</p>
+                <p><strong>✉️ Email :</strong> teo.leferme@ipsa.fr</p>
             </div>
         </section>
 
-        <!-- 2. PROJETS (AVEC ANCRES POUR LE MENU DÉROULANT) -->
-        <section id="projets">
-            <h2>Projets Majeurs</h2>
-            <div class="card-grid">
-                
-                <div class="card" id="proj-navette">
-                    <span class="card-tag">CAO & CFD</span>
-                    <h3>Navette Spatiale</h3>
-                    <div class="card-subtitle">Modélisation & Analyse Aérodynamique</div>
-                    <p>Construction et dimensionnement d'une navette spatiale sur CATIA V5 suivi d'une analyse thermique et aérodynamique sur STAR CCM+.</p>
-                </div>
-
-                <div class="card" id="proj-sousmarin">
-                    <span class="card-tag">IA & STRUCTURE</span>
-                    <h3>Sous-Marin Autonome</h3>
-                    <div class="card-subtitle">Machine Learning & Conception</div>
-                    <p>Conception structurelle complète d'un sous-marin autonome piloté par un modèle de Machine Learning pour l'optimisation de la trajectoire.</p>
-                </div>
-
-                <div class="card" id="proj-bea">
-                    <span class="card-tag">SÉCURITÉ AÉRIENNE</span>
-                    <h3>Enquête Incident BEA</h3>
-                    <div class="card-subtitle">Analyse Technique</div>
-                    <p>Reconstitution et analyse approfondie d'un événement aéronautique en appliquant les méthodologies officielles d'enquête de sécurité.</p>
-                </div>
-
-            </div>
-        </section>
-
-        <!-- 3. EXPÉRIENCES PROFESSIONNELLES -->
-        <section id="exp">
-            <h2>Expériences Professionnelles</h2>
-            <div class="card-grid">
-
-                <div class="card">
-                    <span class="card-tag">2026 — 3 MOIS (ITALIE)</span>
-                    <h3>Ingénieur Conception & Certification</h3>
-                    <div class="card-subtitle">SMD.aero</div>
-                    <p>Conception de pièces d'avions légers sur CATIA et élaboration de dossiers de certification réglementaires conformes aux exigences EASA.</p>
-                </div>
-
-                <div class="card">
-                    <span class="card-tag">2025 — CDD</span>
-                    <h3>Agent des Impôts</h3>
-                    <div class="card-subtitle">DDFIP</div>
-                    <p>Référencement de plans cadastraux et gestion des données foncières professionnelles.</p>
-                </div>
-
-                <div class="card">
-                    <span class="card-tag">2019 & 2024</span>
-                    <h3>Câbleur-Monteur</h3>
-                    <div class="card-subtitle">DYNAMELEC</div>
-                    <p>Montage et câblage d'armoires électriques industrielles et d'automates.</p>
-                </div>
-
-            </div>
-        </section>
-
-        <!-- 4. FORMATION & COMPÉTENCES -->
-        <section id="formation">
-            <h2>Formation & Compétences</h2>
-            <div class="card-grid">
-
-                <div class="card">
-                    <span class="card-tag">2022 — 2027</span>
-                    <h3>Diplôme d'Ingénieur Aéronautique</h3>
-                    <div class="card-subtitle">IPSA Toulouse</div>
-                    <p>Cycle ingénieur spécialisé en ingénierie des véhicules spatiaux et aéronautiques.</p>
-                </div>
-
-                <div class="card">
-                    <span class="card-tag">LOGICIELS & CAO</span>
-                    <h3>Outils Techniques</h3>
-                    <div class="badge-container">
-                        <span class="badge">CATIA V5</span>
-                        <span class="badge">STAR CCM+</span>
-                        <span class="badge">Patran / Nastran</span>
-                        <span class="badge">AutoCAD</span>
-                        <span class="badge">Python</span>
-                        <span class="badge">Matlab</span>
-                    </div>
-                </div>
-
+        <section>
+            <h2>Passions & Loisirs</h2>
+            <div class="badge-container">
+                <span class="badge">🚴‍♂️ Cyclisme (9 ans en club)</span>
+                <span class="badge">🕳️ Spéléologie</span>
+                <span class="badge">🖨️ Impression 3D & Bricolage</span>
+                <span class="badge">🏔️ Alpinisme</span>
+                <span class="badge">🥾 Randonnée</span>
+                <span class="badge">🩹 Premier Secours Citoyen (PSC1)</span>
             </div>
         </section>
 
         <footer>
             <p>© 2026 Téo Leferme — Portfolio hébergé sur GitHub Pages</p>
         </footer>
-
     </div>
 
 </body>

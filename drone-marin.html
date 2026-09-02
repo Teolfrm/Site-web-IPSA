@@ -5,11 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Drone Marin — Téo Leferme</title>
     <link rel="stylesheet" href="style.css">
+    
+    <!-- Script Google Model-Viewer pour la 3D -->
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
 </head>
 <body>
 
     <nav class="navbar">
-        <a href="index.html" class="logo">TÉO LEFERME <span>.AERO</span></a>
+        <a href="index.html" class="logo">TÉO LEFERME</a>
         <ul class="nav-links">
             <li><a href="index.html">Accueil</a></li>
             <li class="dropdown">
@@ -28,23 +31,44 @@
     </nav>
 
     <div class="container">
-        <h1 class="page-title">🌊 Drone Marin & Navigation Autonome</h1>
+        <h1 class="page-title">Drone Marin & Navigation Autonome</h1>
 
-        <div class="card">
-            <span class="card-tag">STRUCTURE & MACHINE LEARNING — IPSA</span>
-            <p style="margin-top: 15px;">
-                Conception d'un drone sous-marin autonome intégrant dimensionnement mécanique de coque et contrôle par intelligence artificielle.
-            </p>
+        <!-- Grille à 2 colonnes (Texte à gauche / 3D à droite) -->
+        <div class="hero">
+            
+            <!-- Colonne de gauche : Informations du projet -->
+            <div class="card">
+                <span class="card-tag">STRUCTURE & MACHINE LEARNING — IPSA</span>
+                <p style="margin-top: 15px;">
+                    Conception d'un drone sous-marin autonome intégrant dimensionnement mécanique de coque et contrôle par intelligence artificielle.
+                </p>
 
-            <h3 style="margin-top: 20px; color:#ffffff;">Travaux réalisés :</h3>
-            <ul>
-                <li><strong>Calcul de Structure :</strong> Résistance aux contraintes de pression hydrostatique et choix des matériaux pour l'étanchéité.</li>
-                <li><strong>Machine Learning :</strong> Développement sous Python d'un modèle d'apprentissage pour l'optimisation des trajectoires et le maintien de cap.</li>
-                <li><strong>Prototypage & Intégration :</strong> Assemblage des systèmes d'actuateurs et des capteurs de navigation.</li>
-            </ul>
+                <h3 style="margin-top: 20px; color:#ffffff;">Travaux réalisés :</h3>
+                <ul>
+                    <li><strong>Calcul de Structure :</strong> Résistance aux contraintes de pression hydrostatique et choix des matériaux pour l'étanchéité.</li>
+                    <li><strong>Machine Learning :</strong> Développement sous Python d'un modèle d'apprentissage pour l'optimisation des trajectoires et le maintien de cap.</li>
+                    <li><strong>Prototypage & Intégration :</strong> Assemblage des systèmes d'actuateurs et des capteurs de navigation.</li>
+                </ul>
+            </div>
+
+            <!-- Colonne de droite : Visualisation 3D -->
+            <div class="card" style="display: flex; flex-direction: column; justify-content: center;">
+                <span class="card-tag">MODÈLE 3D INTERACTIF</span>
+                <h3 style="margin-bottom: 15px;">Visualisation 3D</h3>
+                
+                <model-viewer 
+                    src="drone-marin.glb" 
+                    alt="Modèle 3D Drone Marin" 
+                    auto-rotate 
+                    camera-controls 
+                    shadow-intensity="1"
+                    style="width: 100%; height: 380px; background-color: #0d1117; border-radius: 8px; border: 1px solid #30363d;">
+                </model-viewer>
+            </div>
+
         </div>
 
-        <p><a href="projets.html" style="color: #f39c12; text-decoration: none;">← Retour à la liste des projets</a></p>
+        <p style="margin-top: 20px;"><a href="projets.html" style="color: #f39c12; text-decoration: none;">← Retour à la liste des projets</a></p>
 
         <footer>
             <p>© 2026 Téo Leferme — Portfolio hébergé sur GitHub Pages</p>

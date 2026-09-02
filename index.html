@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Portfolio - IPSA</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #0f0f11;
+            color: #f4f4f5;
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        header {
+            max-width: 800px;
+            margin: 0 auto 60px auto;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 300;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        p.subtitle {
+            color: #a1a1aa;
+            font-size: 1.1rem;
+        }
+
+        .gallery {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background-color: #18181b;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #27272a;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .card-content {
+            padding: 20px;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+        }
+
+        .card-desc {
+            color: #a1a1aa;
+            font-size: 0.9rem;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 80px;
+            color: #52525b;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>JEO / PORTFOLIO</h1>
+        <p class="subtitle">Projets & Travaux – IPSA</p>
+    </header>
+
+    <main class="gallery">
+        <article class="card">
+            <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800" alt="Projet 1">
+            <div class="card-content">
+                <h2 class="card-title">Projet 01</h2>
+                <p class="card-desc">Description courte du premier projet ou concept visuel.</p>
+            </div>
+        </article>
+
+        <article class="card">
+            <img src="https://images.unsplash.com/photo-1511818966892-d7d671e672a2?w=800" alt="Projet 2">
+            <div class="card-content">
+                <h2 class="card-title">Projet 02</h2>
+                <p class="card-desc">Description courte du second projet.</p>
+            </div>
+        </article>
+
+        <article class="card">
+            <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800" alt="Projet 3">
+            <div class="card-content">
+                <h2 class="card-title">Projet 03</h2>
+                <p class="card-desc">Description du troisième projet de design ou d'architecture.</p>
+            </div>
+        </article>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 — Tous droits réservés</p>
+    </footer>
+
+</body>
+</html>

@@ -92,6 +92,12 @@ body {
     position: relative;
 }
 
+/* Désactive le clic UNIQUEMENT sur le titre principal "Projets" */
+.dropdown > a {
+    pointer-events: none; /* Bloque le clic */
+    cursor: default;      /* Change le curseur en flèche normale */
+}
+
 .dropdown-menu {
     display: none;
     position: absolute;
@@ -107,10 +113,13 @@ body {
     z-index: 100;
 }
 
+/* Réactive les clics pour tous les sous-liens du menu déroulant */
 .dropdown-menu li a {
     display: block;
     padding: 8px 20px;
     color: #c9d1d9;
+    pointer-events: auto; /* Force la réactivation du clic */
+    cursor: pointer;      /* Rétablit le curseur main */
 }
 
 .dropdown-menu li a:hover {

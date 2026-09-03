@@ -5,11 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formation — Téo Leferme</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* Conteneur Flex pour espacer proprement les cartes de formation */
+        .formation-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card-subtitle {
+            color: #00a8ff;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-top: 4px;
+            margin-bottom: 12px;
+        }
+    </style>
 </head>
 <body>
 
     <nav class="navbar">
-        <a href="index.html" class="logo">TÉO LEFERME <span>.AERO</span></a>
+        <a href="index.html" class="logo">TÉO LEFERME</a>
         <ul class="nav-links">
             <li><a href="index.html">Accueil</a></li>
             <li class="dropdown">
@@ -30,22 +47,33 @@
     <div class="container">
         <h1 class="page-title">Parcours & Diplômes</h1>
 
-        <div class="card">
-            <span class="card-tag">DIPLÔME D'INGÉNIEUR</span>
-            <h3>IPSA — École d'ingénieurs de l'air et de l'espace</h3>
-            <div class="card-subtitle">2021 — Présent</div>
-            <p>Spécialisation dans les systèmes aéronautiques et spatiaux, aérodynamique, mécanique des fluides et structures.</p>
-        </div>
+        <div class="formation-section">
 
-        <div class="card">
-            <span class="card-tag">BACCALAURÉAT</span>
-            <h3>Baccalauréat Général</h3>
-            <div class="card-subtitle">Obtenu avec mention</div>
-            <p>Spécialités Mathématiques et Physique-Chimie.</p>
+            <div class="card">
+                <span class="card-tag">DIPLÔME D'INGÉNIEUR</span>
+                <h3 style="margin-top: 10px; color: #ffffff;">IPSA — École d'ingénieurs de l'air et de l'espace</h3>
+                <div class="card-subtitle">2022 - 2027</div>
+                <p>Spécialisation dans les systèmes aéronautiques et spatiaux, aérodynamique, mécanique des fluides et structures.</p>
+            </div>
+
+            <div class="card">
+                <span class="card-tag">SEMESTRE À L'ÉTRANGER</span>
+                <h3 style="margin-top: 10px; color: #ffffff;">USM — Universiti Sains Malaysia</h3>
+                <div class="card-subtitle">Malaisie — Semestre d'échange universités partenaires</div>
+                <p>Échange universitaire à l'international axé sur l'ingénierie et l'immersion interculturelle.</p>
+            </div>
+
+            <div class="card">
+                <span class="card-tag">BACCALAURÉAT</span>
+                <h3 style="margin-top: 10px; color: #ffffff;">Baccalauréat Général</h3>
+                <div class="card-subtitle">Obtenu avec mention</div>
+                <p>Spécialités Mathématiques et Physique-Chimie.</p>
+            </div>
+
         </div>
 
         <footer>
-            <p>© 2026 Téo Leferme — Portfolio hébergé sur GitHub Pages</p>
+            <p>© 2026 Téo Leferme — Portfolio</p>
         </footer>
     </div>
 

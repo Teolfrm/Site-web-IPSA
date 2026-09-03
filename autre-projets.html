@@ -137,38 +137,38 @@
                     Ce projet étudie le design et le comportement fluide d'une tuyère supersonique de type AeroSpike[cite: 3]. Ce concept innovant permet de maintenir des performances propulsives optimales à toutes les altitudes en adaptant naturally le faisceau de détente à la pression atmosphérique ambiante[cite: 3].
                 </p>
                 <ul class="project-list">
-                    <li><strong>Analyse thermodynamique :</strong> Détermination des grandeurs fondamentales au col et en sortie[cite: 3]. Pour un débit massique ṁ = 102 kg/s, le Mach adapté obtenu en sortie est de M_adapt = 2,71, générant une poussée théorique idéale de 164,1 kN[cite: 3].</li>
-                    <li><strong>Design aérodynamique :</strong> Mise en œuvre de la Méthode des Caractéristiques (MOC) sous Python basée sur les relations de Prandtl-Meyer pour discrétiser le faisceau de détente[cite: 3].</li>
-                    <li><strong>Optimisation de la rampe :</strong> Comparaison entre une rampe simplifiée à angle constant et une rampe réelle profilée (spline)[cite: 3]. L'intégration du champ de pression sur la paroi réelle montre une poussée axiale de 169,76 kN[cite: 3], confirmant l'efficacité du profil pour éviter les réflexions d'ondes[cite: 3].</li>
+                    <li><strong>Analyse thermodynamique :</strong> Détermination des grandeurs totales au col et en sortie pour les calculer en tout point de la tuyère. </li>
+                    <li><strong>Design aérodynamique :</strong> Mise en œuvre de la Méthode des Caractéristiques sous Python basée sur les relations de Prandtl-Meyer pour discrétiser le faisceau de détente.</li>
+                    <li><strong>Optimisation de la rampe :</strong> Comparaison entre une rampe simplifiée à angle constant et une rampe réelle profilée (spline). L'intégration du champ de pression sur la paroi réelle montre une poussée supérieure pour la tuyère réelle, confirmant l'efficacité du profil spline pour éviter les réflexions d'ondes.</li>
                 </ul>
             </div>
             <div class="project-image-container">
-                <img src="images/aerospike.jpg" alt="Profil et tracé des caractéristiques de la tuyère AeroSpike" class="project-image">
+                <img src="33.jpg" alt="Profil et tracé des caractéristiques de la tuyère AeroSpike" class="project-image">
             </div>
         </section>
 
         <!-- Projet 4 -->
         <section class="project-section">
             <div class="project-content">
-                <h2 class="project-title">Représentation graphique des systèmes multiphysiques par Bond Graph</h2>
+                <h2 class="project-title">Représentation graphique des systèmes multiphysiques par Bond Graph appliquée à une pompe à insuline</h2>
                 <p class="project-description">
-                    Ce projet explore la méthodologie Bond Graph, un langage graphique unifié permettant de modéliser, simuler et analyser des systèmes mécatroniques et multiphysiques complexes[cite: 4]. L'approche repose sur le transfert d'énergie et de puissance entre différents domaines physiques (mécanique, électrique, hydraulique, thermique et chimique)[cite: 4].
+                    Ce projet explore la méthodologie Bond Graph, un langage graphique unifié permettant de modéliser, simuler et analyser des systèmes mécatroniques et multiphysiques complexes. L'approche repose sur le transfert d'énergie et de puissance entre différents domaines physiques (mécanique, électrique, hydraulique, thermique...).
                 </p>
                 <ul class="project-list">
-                    <li><strong>Structure multi-énergie :</strong> Utilisation des variables d'effort (e) et de flux (f)[cite: 4] pour associer les composants élémentaires (R, C, I, TF, GY, Se, Sf)[cite: 4] au sein d'une architecture globale.</li>
-                    <li><strong>Niveaux de modélisation :</strong> Déclinaison de l'analyse du niveau technologique (Word Bond Graph)[cite: 4] au niveau algorithmique (affectation des causalités via la procédure SCAP)[cite: 4] pour la génération automatique des équations d'état[cite: 4].</li>
-                    <li><strong>Applications mécatroniques :</strong> Analyse appliquée à des systèmes complexes tels que les véhicules hybrides[cite: 4], la production d'hydrogène vert par électrolyseur[cite: 4] ou la modélisation dynamique de suspensions automobiles[cite: 4].</li>
+                    <li><strong>Structure basé sur les transferts d'énergie :</strong> Utilisation des variables d'effort et de flux pour associer les composants élémentaires au sein du système de pompe.</li>
+                    <li><strong>Modélisation :</strong> Déclinaison de l'analyse Word Bond Graph au niveau algorithmique (affectation des causalités via le bondgraph) pour la génération des équations d'état.</li>
+                    <li><strong>Applications matlab :</strong>Application du système trouvé par le Bond Graph sur Matlab/Simulink pour avoir une modélisation de la réponse de la pompe à insuline en cas de manque dans le sang.</li>
                 </ul>
             </div>
             <div class="project-image-container">
-                <img src="images/bond-graph.jpg" alt="Schéma Bond Graph d'un système mécatronique" class="project-image">
+                <img src="44.jpg" alt="Schéma Bond Graph d'un système mécatronique" class="project-image">
             </div>
         </section>
 
         <!-- Projet 5 : Automatique MATLAB -->
         <section class="project-section">
             <div class="project-content">
-                <h2 class="project-title">Modélisation, Identification et Contrôle d'un Système sous MATLAB / Simulink</h2>
+                <h2 class="project-title">Modélisation d'un drone sous MATLAB / Simulink</h2>
                 <p class="project-description">
                     Ce projet est centré sur l'analyse dynamique, l'identification de paramètres et l'asservissement d'un système physique à l'aide des outils avancés d'automatique sous MATLAB et Simulink. L'objectif est de garantir la stabilité, la rapidité et la précision de la réponse en boucle fermée face à des perturbations.
                 </p>

@@ -5,16 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Expériences — Téo Leferme</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* Espacement entre les rubriques d'expériences */
+        .experience-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card-subtitle {
+            color: #00a8ff;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-top: 4px;
+            margin-bottom: 12px;
+        }
+
+        .card ul {
+            margin-left: 20px;
+            margin-top: 8px;
+        }
+
+        .card li {
+            margin-bottom: 6px;
+        }
+    </style>
 </head>
 <body>
 
     <nav class="navbar">
-        <a href="index.html" class="logo">TÉO LEFERME <span>.AERO</span></a>
+        <a href="index.html" class="logo">TÉO LEFERME</a>
         <ul class="nav-links">
             <li><a href="index.html">Accueil</a></li>
             <li class="dropdown">
                 <a href="projets.html">Projets ▾</a>
-                <ul class="dropdown-menu">                   
+                <ul class="dropdown-menu">                    
                     <li><a href="navette.html">Navette Spatiale</a></li>
                     <li><a href="drone-marin.html">Drone Marin</a></li> 
                     <li><a href="fusee.html">Fusée Expérimentale</a></li>
@@ -30,22 +56,47 @@
     <div class="container">
         <h1 class="page-title">Expériences Professionnelles & Associatives</h1>
 
-        <div class="card">
-            <span class="card-tag">STAGE</span>
-            <h3>Assistant Ingénieur Aéronautique</h3>
-            <div class="card-subtitle">Entreprise / Organisme — Dates</div>
-            <p>Description de tes missions, des projets sur lesquels tu as travaillé et des résultats obtenus.</p>
-        </div>
+        <div class="experience-section">
 
-        <div class="card">
-            <span class="card-tag">ASSOCIATIF</span>
-            <h3>Membre d'une association spatiale / aéronautique</h3>
-            <div class="card-subtitle">IPSA — Dates</div>
-            <p>Participation à la conception de projets techniques, travail en équipe et gestion de projet.</p>
+            <div class="card">
+                <span class="card-tag">STAGE TECHNIQUE</span>
+                <h3 style="margin-top: 10px; color: #ffffff;">Intégration & Essais Systèmes</h3>
+                <div class="card-subtitle">Entreprise / Organisme — Juin 2025 - Août 2025</div>
+                <p>Missions réalisées :</p>
+                <ul>
+                    <li>Participation aux tests de bancs d'essais et à la qualification de sous-systèmes.</li>
+                    <li>Analyse de données de mesures et rédaction de rapports de test techniques.</li>
+                    <li>Collaboration avec les équipes d'ingénierie pour l'optimisation des procédures de test.</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <span class="card-tag">PROJET ASSOCIATIF & RECHERCHE</span>
+                <h3 style="margin-top: 10px; color: #ffffff;">Responsable Modélisation & CAO</h3>
+                <div class="card-subtitle">Association Aérospatiale IPSA — Septembre 2024 - Présent</div>
+                <p>Missions réalisées :</p>
+                <ul>
+                    <li>Conception 3D de composants d'engins spatiaux sur CATIA V5.</li>
+                    <li>Simulation aérodynamique et calculs de stabilité mécanique.</li>
+                    <li>Encadrement d'une équipe de 4 étudiants pour l'assemblage des prototypes.</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <span class="card-tag">STAGE D'INITIATION</span>
+                <h3 style="margin-top: 10px; color: #ffffff;">Découverte des Procédés de Fabrication</h3>
+                <div class="card-subtitle">Atelier Aéronautique — Janvier 2024</div>
+                <p>Missions réalisées :</p>
+                <ul>
+                    <li>Observation des processus d'usinage, de prototypage rapide et d'impression 3D.</li>
+                    <li>Sensibilisation aux normes de sécurité et de qualité en milieu industriel.</li>
+                </ul>
+            </div>
+
         </div>
 
         <footer>
-            <p>© 2026 Téo Leferme — Portfolio hébergé sur GitHub Pages</p>
+            <p>© 2026 Téo Leferme — Portfolio</p>
         </footer>
     </div>
 

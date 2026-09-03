@@ -1,21 +1,72 @@
 <!DOCTYPE html>
-
-
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Titre de ta page</title>
-
-    <link rel="icon" type="image/png" href="logo.png">
-
-    <link rel="stylesheet" href="style.css">
-</head>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Autres Projets — Téo Leferme</title>
+    <link rel="icon" type="image/png" href="logo.png">
     <link rel="stylesheet" href="style.css">
+    <style>
+        .project-section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 30px;
+            margin-bottom: 60px;
+            padding-bottom: 40px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .project-content {
+            flex: 1;
+        }
+
+        .project-title {
+            color: #ffffff;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+
+        .project-description {
+            color: #e0e0e0;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .project-list {
+            color: #cccccc;
+            line-height: 1.6;
+            padding-left: 20px;
+        }
+
+        .project-list li {
+            margin-bottom: 8px;
+        }
+
+        .project-image-container {
+            flex: 0 0 400px;
+            max-width: 400px;
+        }
+
+        .project-image {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            object-fit: cover;
+        }
+
+        @media (max-width: 768px) {
+            .project-section {
+                flex-direction: column;
+            }
+            .project-image-container {
+                flex: 1 1 100%;
+                width: 100%;
+                max-width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
 
@@ -39,28 +90,120 @@
     </nav>
 
     <div class="container">
-        <h1 class="page-title">💡 Autres Projets & Analyses</h1>
+        <h1 class="page-title">Autres Projets réalisés</h1>
 
-        <div class="card">
-            <span class="card-tag">SÉCURITÉ AÉRIENNE</span>
-            <h3>✈️ Enquête sur un Incident Aéronautique (BEA)</h3>
-            <p style="margin-top:10px;">
-                Reconstitution technique et analyse d'un événement aéronautique en appliquant les méthodologies officielles d'enquête de sécurité du Bureau d'Enquêtes et d'Analyses (BEA).
-            </p>
-        </div>
+        <!-- Projet 1 -->
+        <section class="project-section">
+            <div class="project-content">
+                <h2 class="project-title">Étude du phénomène de décrochage dynamique (Dynamic Stall)</h2>
+                <p class="project-description">
+                    Ce projet s'intéresse au comportement aérodynamique d'un profil d'aile NACA 0020 soumis au phénomène de décrochage dynamique[cite: 1]. L'objectif principal est de modéliser et de comprendre les instabilités d'écoulement, la formation des vortex et le comportement de la couche limite à travers des simulations numériques fluides (CFD)[cite: 1].
+                </p>
+                <ul class="project-list">
+                    <li><strong>Conception CAO :</strong> Modélisation géométrique du profil NACA 0020 sous CATIA V5 puis exportation au format .stl pour intégration numérique[cite: 1].</li>
+                    <li><strong>Modélisation CFD :</strong> Configuration sous Star-CCM+ en écoulement bicouche bidimensionnel (2D) à l'aide du modèle de turbulence k-ω SST (Menter)[cite: 1]. Une étude de convergence de maillage a été menée sur plus de 160 000 cellules[cite: 1].</li>
+                    <li><strong>Analyse aérodynamique :</strong> Évaluation des coefficients de portance (Cz) et de traînée (Cx) pour différents angles d'incidence (de 0° à 18°) et à différents nombres de Reynolds (Re = 500 000 et Re = 1 000 000)[cite: 1]. Le décrochage dynamique ainsi que l'effet d'hystérésis ont été mis en évidence et confrontés aux données expérimentales[cite: 1].</li>
+                </ul>
+            </div>
+            <div class="project-image-container">
+                <img src="images/dynamic-stall.jpg" alt="Simulation CFD du profil NACA 0020" class="project-image">
+            </div>
+        </section>
 
-        <div class="card">
-            <span class="card-tag">CONCEPTION & MAQUETTAGE</span>
-            <h3>🖨️ Impression 3D & Prototypage Personnel</h3>
-            <p style="margin-top:10px;">
-                Modélisation et fabrication de pièces mécaniques sur mesure, optimisation de structures pour l'impression 3D FDM et assemblages complexes.
-            </p>
-        </div>
+        <!-- Projet 2 -->
+        <section class="project-section">
+            <div class="project-content">
+                <h2 class="project-title">Analyse thermique et structurelle par Éléments Finis (EF)</h2>
+                <p class="project-description">
+                    Ce travail porte sur l'analyse numérique du comportement thermomécanique de structures sous contraintes de température et de charge[cite: 2]. L'objectif est d'évaluer les déformations, les dilatations et la distribution des contraintes Von Mises afin de valider le dimensionnement structural d'éléments aérospatiaux[cite: 2].
+                </p>
+                <ul class="project-list">
+                    <li><strong>Modélisation & Maillage :</strong> Prétraitement sous MSC Patran pour la génération de géométries 1D, 2D et 3D (éléments hexaédriques) et application des conditions aux limites[cite: 2].</li>
+                    <li><strong>Analyse éléments finis :</strong> Résolution des équations de conduction, convection et dilatation thermique à l'aide du solveur MSC Nastran[cite: 2].</li>
+                    <li><strong>Cylindre creux en aluminium :</strong> Évaluation de la contrainte maximale de Von Mises (≈ 84,6 MPa)[cite: 2] et de l'allongement thermique (ΔL ≈ 7,39 × 10⁻⁴ m)[cite: 2], montrant un écart relatif inférieur à 1,2 % par rapport au calcul analytique[cite: 2].</li>
+                    <li><strong>Mur multicouche de four :</strong> Étude des transferts de chaleur à travers trois couches de briques (alumine, kaolin, ordinaires)[cite: 2], comparant les modèles 1D et 3D soumis à des conditions de convection[cite: 2].</li>
+                </ul>
+            </div>
+            <div class="project-image-container">
+                <img src="images/analyse-thermique.jpg" alt="Cartographie des contraintes Von Mises sous MSC Patran" class="project-image">
+            </div>
+        </section>
 
-        <p><a href="projets.html" style="color: #f39c12; text-decoration: none;">← Retour à la liste des projets</a></p>
+        <!-- Projet 3 -->
+        <section class="project-section">
+            <div class="project-content">
+                <h2 class="project-title">Conception et analyse d'une tuyère supersonique AeroSpike</h2>
+                <p class="project-description">
+                    Ce projet étudie le design et le comportement fluide d'une tuyère supersonique de type AeroSpike[cite: 3]. Ce concept innovant permet de maintenir des performances propulsives optimales à toutes les altitudes en adaptant naturally le faisceau de détente à la pression atmosphérique ambiante[cite: 3].
+                </p>
+                <ul class="project-list">
+                    <li><strong>Analyse thermodynamique :</strong> Détermination des grandeurs fondamentales au col et en sortie[cite: 3]. Pour un débit massique ṁ = 102 kg/s, le Mach adapté obtenu en sortie est de M_adapt = 2,71, générant une poussée théorique idéale de 164,1 kN[cite: 3].</li>
+                    <li><strong>Design aérodynamique :</strong> Mise en œuvre de la Méthode des Caractéristiques (MOC) sous Python basée sur les relations de Prandtl-Meyer pour discrétiser le faisceau de détente[cite: 3].</li>
+                    <li><strong>Optimisation de la rampe :</strong> Comparaison entre une rampe simplifiée à angle constant et une rampe réelle profilée (spline)[cite: 3]. L'intégration du champ de pression sur la paroi réelle montre une poussée axiale de 169,76 kN[cite: 3], confirmant l'efficacité du profil pour éviter les réflexions d'ondes[cite: 3].</li>
+                </ul>
+            </div>
+            <div class="project-image-container">
+                <img src="images/aerospike.jpg" alt="Profil et tracé des caractéristiques de la tuyère AeroSpike" class="project-image">
+            </div>
+        </section>
 
+        <!-- Projet 4 -->
+        <section class="project-section">
+            <div class="project-content">
+                <h2 class="project-title">Représentation graphique des systèmes multiphysiques par Bond Graph</h2>
+                <p class="project-description">
+                    Ce projet explore la méthodologie Bond Graph, un langage graphique unifié permettant de modéliser, simuler et analyser des systèmes mécatroniques et multiphysiques complexes[cite: 4]. L'approche repose sur le transfert d'énergie et de puissance entre différents domaines physiques (mécanique, électrique, hydraulique, thermique et chimique)[cite: 4].
+                </p>
+                <ul class="project-list">
+                    <li><strong>Structure multi-énergie :</strong> Utilisation des variables d'effort (e) et de flux (f)[cite: 4] pour associer les composants élémentaires (R, C, I, TF, GY, Se, Sf)[cite: 4] au sein d'une architecture globale.</li>
+                    <li><strong>Niveaux de modélisation :</strong> Déclinaison de l'analyse du niveau technologique (Word Bond Graph)[cite: 4] au niveau algorithmique (affectation des causalités via la procédure SCAP)[cite: 4] pour la génération automatique des équations d'état[cite: 4].</li>
+                    <li><strong>Applications mécatroniques :</strong> Analyse appliquée à des systèmes complexes tels que les véhicules hybrides[cite: 4], la production d'hydrogène vert par électrolyseur[cite: 4] ou la modélisation dynamique de suspensions automobiles[cite: 4].</li>
+                </ul>
+            </div>
+            <div class="project-image-container">
+                <img src="images/bond-graph.jpg" alt="Schéma Bond Graph d'un système mécatronique" class="project-image">
+            </div>
+        </section>
+
+        <!-- Projet 5 : Automatique MATLAB -->
+        <section class="project-section">
+            <div class="project-content">
+                <h2 class="project-title">Modélisation, Identification et Contrôle d'un Système sous MATLAB / Simulink</h2>
+                <p class="project-description">
+                    Ce projet est centré sur l'analyse dynamique, l'identification de paramètres et l'asservissement d'un système physique à l'aide des outils avancés d'automatique sous MATLAB et Simulink. L'objectif est de garantir la stabilité, la rapidité et la précision de la réponse en boucle fermée face à des perturbations.
+                </p>
+                <ul class="project-list">
+                    <li><strong>Modélisation & Analyse temporelle/fréquentielle :</strong> Établissement des fonctions de transfert, étude de la stabilité (critères de Routh, lieux des racines) et analyse des marges de phase et de gain à travers les diagrammes de Bode et Black-Nichols.</li>
+                    <li><strong>Synthèse de Correcteurs :</strong> Conception, réglage et optimisation de correcteurs de type PID et avance/retard de phase pour répondre à des cahiers des charges stricts (dépassement, temps de réponse, erreur statique).</li>
+                    <li><strong>Simulation sous Simulink :</strong> Validation du comportement temporel en boucle fermée, test de robustesse aux bruits de mesure et simulation des variations de charge du système.</li>
+                </ul>
+            </div>
+            <div class="project-image-container">
+                <img src="images/automatique-matlab.jpg" alt="Schéma bloc Simulink et réponses temporelles / Bode" class="project-image">
+            </div>
+        </section>
+
+        <!-- Projet 6 : CFD Avancée -->
+        <section class="project-section">
+            <div class="project-content">
+                <h2 class="project-title">Simulation Aérodynamique et CFD Avancée d'Écoulements Complexes</h2>
+                <p class="project-description">
+                    Ce projet consiste en une analyse numérique approfondie d'écoulements fluides compressibles/incompressibles autour de géométries complexes (profils, tuyères ou corps fuselés). L'étude vise à caractériser précisément les structures渦billonneuses, le comportement de la couche limite et la distribution des pressions.
+                </p>
+                <ul class="project-list">
+                    <li><strong>Génération de Maillage Stratifié :</strong> Création de maillages structurés et non-structurés haute fidélité avec raffinement de la couche limite ($y^+ \approx 1$) pour capter avec précision les gradients pariétaux.</li>
+                    <li><strong>Résolution Numérique :</strong> Configuration des modèles de turbulence (RANS : $k-\epsilon$, $k-\omega$ SST / LES) et paramétrage des schémas de convection pour assurer une convergence stable des résidus.</li>
+                    <li><strong>Post-traitement & Traînée :</strong> Cartographie des champs de vitesse, de pression et de turbulence, prédiction du point de décollement et bilan complet des forces aérodynamiques (portance, traînée d'onde et de frottement).</li>
+                </ul>
+            </div>
+            <div class="project-image-container">
+                <img src="images/cfd-avancee.jpg" alt="Simulation CFD d'un écoulement aérodynamique complexe" class="project-image">
+            </div>
+        </section>
+
+        
         <footer>
-            <p>© 2026 Téo Leferme — Portfolio hébergé sur GitHub Pages</p>
+            <p>© 2026 Téo Leferme — Portfolio </p>
         </footer>
     </div>
 

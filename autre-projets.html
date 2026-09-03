@@ -71,7 +71,7 @@
 <body>
 
     <nav class="navbar">
-        <a href="index.html" class="logo">TÉO LEFERME <span>.AERO</span></a>
+        <a href="index.html" class="logo">TÉO LEFERME </span></a>
         <ul class="nav-links">
             <li><a href="index.html">Accueil</a></li>
             <li class="dropdown">
@@ -95,37 +95,37 @@
         <!-- Projet 1 -->
         <section class="project-section">
             <div class="project-content">
-                <h2 class="project-title">Étude du phénomène de décrochage dynamique (Dynamic Stall)</h2>
+                <h2 class="project-title">Étude du phénomène de décrochage dynamique (Dynamic Stall), fait en équipe</h2>
                 <p class="project-description">
-                    Ce projet s'intéresse au comportement aérodynamique d'un profil d'aile NACA 0020 soumis au phénomène de décrochage dynamique[cite: 1]. L'objectif principal est de modéliser et de comprendre les instabilités d'écoulement, la formation des vortex et le comportement de la couche limite à travers des simulations numériques fluides (CFD)[cite: 1].
+                    Ce projet s'intéresse au comportement aérodynamique d'un profil d'aile NACA 0020 soumis au phénomène de décrochage dynamique. L'objectif principal est de modéliser et de comprendre les instabilités d'écoulement, la formation des vortex et le comportement de la couche limite à travers des simulations numériques fluides (CFD).
                 </p>
                 <ul class="project-list">
-                    <li><strong>Conception CAO :</strong> Modélisation géométrique du profil NACA 0020 sous CATIA V5 puis exportation au format .stl pour intégration numérique[cite: 1].</li>
-                    <li><strong>Modélisation CFD :</strong> Configuration sous Star-CCM+ en écoulement bicouche bidimensionnel (2D) à l'aide du modèle de turbulence k-ω SST (Menter)[cite: 1]. Une étude de convergence de maillage a été menée sur plus de 160 000 cellules[cite: 1].</li>
-                    <li><strong>Analyse aérodynamique :</strong> Évaluation des coefficients de portance (Cz) et de traînée (Cx) pour différents angles d'incidence (de 0° à 18°) et à différents nombres de Reynolds (Re = 500 000 et Re = 1 000 000)[cite: 1]. Le décrochage dynamique ainsi que l'effet d'hystérésis ont été mis en évidence et confrontés aux données expérimentales[cite: 1].</li>
+                    <li><strong>Conception CAO :</strong> Modélisation géométrique du profil NACA 0020 sous CATIA V5 puis exportation au format .stl pourl'intégrer sur StarCCM+</li>
+                    <li><strong>Modélisation CFD :</strong> Configuration sous Star-CCM+ en écoulement turbulent bidimensionnel (2D) à l'aide du modèle de turbulence k-ω SST. Une étude de convergence de maillage a été menée pour optimiser le calcul.</li>
+                    <li><strong>Analyse aérodynamique :</strong> Évaluation des coefficients de portance (Cz) et de traînée (Cx) pour différents angles d'incidence (de 0° à 18°) et à différents nombres de Reynolds (Re = 500 000 et Re = 1 000 000). Le décrochage dynamique ainsi que l'effet d'hystérésis ont été mis en évidence et confrontés aux données expérimentales.</li>
                 </ul>
             </div>
             <div class="project-image-container">
-                <img src="images/dynamic-stall.jpg" alt="Simulation CFD du profil NACA 0020" class="project-image">
+                <img src="11.jpg" alt="Simulation CFD du profil NACA 0020" class="project-image">
             </div>
         </section>
 
         <!-- Projet 2 -->
         <section class="project-section">
             <div class="project-content">
-                <h2 class="project-title">Analyse thermique et structurelle par Éléments Finis (EF)</h2>
+                <h2 class="project-title">Analyse thermique et structurelle par Éléments Finis (FEM)</h2>
                 <p class="project-description">
-                    Ce travail porte sur l'analyse numérique du comportement thermomécanique de structures sous contraintes de température et de charge[cite: 2]. L'objectif est d'évaluer les déformations, les dilatations et la distribution des contraintes Von Mises afin de valider le dimensionnement structural d'éléments aérospatiaux[cite: 2].
+                    Ce travail porte sur l'analyse numérique du comportement thermomécanique de structures sous contraintes de température et de charge. L'objectif est d'évaluer les déformations, les dilatations et la distribution des contraintes (Von Mises) afin de valider le dimensionnement structural d'éléments aérospatiaux.
                 </p>
                 <ul class="project-list">
-                    <li><strong>Modélisation & Maillage :</strong> Prétraitement sous MSC Patran pour la génération de géométries 1D, 2D et 3D (éléments hexaédriques) et application des conditions aux limites[cite: 2].</li>
-                    <li><strong>Analyse éléments finis :</strong> Résolution des équations de conduction, convection et dilatation thermique à l'aide du solveur MSC Nastran[cite: 2].</li>
-                    <li><strong>Cylindre creux en aluminium :</strong> Évaluation de la contrainte maximale de Von Mises (≈ 84,6 MPa)[cite: 2] et de l'allongement thermique (ΔL ≈ 7,39 × 10⁻⁴ m)[cite: 2], montrant un écart relatif inférieur à 1,2 % par rapport au calcul analytique[cite: 2].</li>
-                    <li><strong>Mur multicouche de four :</strong> Étude des transferts de chaleur à travers trois couches de briques (alumine, kaolin, ordinaires)[cite: 2], comparant les modèles 1D et 3D soumis à des conditions de convection[cite: 2].</li>
+                    <li><strong>Modélisation & Maillage :</strong> Prétraitement sous Patran pour la génération de géométries 1D, 2D et 3D et application des conditions aux limites.</li>
+                    <li><strong>Analyse éléments finis :</strong> Résolution des équations de conduction, convection et dilatation thermique à l'aide du solveur Nastran.</li>
+                    <li><strong>Cas n°1: Cylindre creux en aluminium :</strong> Évaluation de la contrainte maximale de Von Mises et de l'allongement thermique, analyse des résultats par rapport au calcul analytique.</li>
+                    <li><strong>Cas n°2: Mur multicouche de four :</strong> Étude des transferts de chaleur à travers trois couches de briques, comparant les modèles 1D et 3D soumis à des conditions de conduction et convection.</li>
                 </ul>
             </div>
             <div class="project-image-container">
-                <img src="images/analyse-thermique.jpg" alt="Cartographie des contraintes Von Mises sous MSC Patran" class="project-image">
+                <img src="22.jpg" alt="Cartographie des contraintes Von Mises sous MSC Patran" class="project-image">
             </div>
         </section>
 

@@ -5,8 +5,117 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Téo Leferme — Portfolio</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* Défilement d'arrière-plan */
+        body {
+            margin: 0;
+            padding: 0;
+            position: relative;
+            background-color: #0b0f19;
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .bg-slider {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+        }
+
+        .bg-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            animation: slideAnimation 24s infinite;
+        }
+
+        .bg-slide:nth-child(1) { background-image: url('images/navette.jpg'); animation-delay: 0s; }
+        .bg-slide:nth-child(2) { background-image: url('images/drone-marin.jpg'); animation-delay: 3s; }
+        .bg-slide:nth-child(3) { background-image: url('images/fusee.jpg'); animation-delay: 6s; }
+        .bg-slide:nth-child(4) { background-image: url('images/dynamic-stall.jpg'); animation-delay: 9s; }
+        .bg-slide:nth-child(5) { background-image: url('images/aerospike.jpg'); animation-delay: 12s; }
+        .bg-slide:nth-child(6) { background-image: url('images/cfd-avancee.jpg'); animation-delay: 15s; }
+
+        @keyframes slideAnimation {
+            0% { opacity: 0; transform: scale(1); }
+            5% { opacity: 1; }
+            20% { opacity: 1; }
+            25% { opacity: 0; transform: scale(1.05); }
+            100% { opacity: 0; }
+        }
+
+        .bg-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(11, 15, 25, 0.85);
+            backdrop-filter: blur(3px);
+            z-index: -1;
+        }
+
+        /* Disposition en 2 colonnes */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-top: 40px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        .badge-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .badge {
+            background: rgba(0, 210, 255, 0.15);
+            color: #00d2ff;
+            border: 1px solid rgba(0, 210, 255, 0.3);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
+
+    <!-- Arrière-plan animé -->
+    <div class="bg-slider">
+        <div class="bg-slide"></div>
+        <div class="bg-slide"></div>
+        <div class="bg-slide"></div>
+        <div class="bg-slide"></div>
+        <div class="bg-slide"></div>
+        <div class="bg-slide"></div>
+    </div>
+    <div class="bg-overlay"></div>
 
     <nav class="navbar">
         <a href="index.html" class="logo">TÉO LEFERME</a>
@@ -29,8 +138,6 @@
 
     <div class="container">
         <section class="hero-main" style="text-align: center; padding: 40px 0;">
-            
-            
             <h1 style="font-size: 3.5rem; color: #fff; margin: 15px 0; text-transform: uppercase;">Téo Leferme</h1>
             
             <p class="subtitle" style="font-size: 1.3rem; font-weight: bold; color: #00d2ff; margin-bottom: 20px;">
@@ -44,18 +151,18 @@
             </p>
         </section>
 
-        <section class="skills-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 40px;">
-            
+        <!-- Section 2 colonnes en bas -->
+        <section class="skills-grid">
             <div class="card">
                 <h3>Compétences Informatiques & CAO</h3>
-                <div class="badge-container" style="margin-top: 15px;">
-                    <span class="badge">Bureautique : PowerPoint, Excel, Word, LaTeX, Unicode </span>
-                    <span class="badge">CAO : Maîtrise de CATIA V5 et Keyshot, initiation à Autocad </span>
-                    <span class="badge">CFD : Maîtrise de STAR CCM+</span>
-                    <span class="badge">FEM :  initiation à Patran - Nastran </span>
+                <div class="badge-container">
+                    <span class="badge">Bureautique : PowerPoint, Excel, Word, LaTeX, Unicode</span>
+                    <span class="badge">CAO : Maîtrise de CATIA V5 et KeyShot, initiation à AutoCAD</span>
+                    <span class="badge">CFD : Maîtrise de STAR-CCM+</span>
+                    <span class="badge">FEM : Initiation à Patran - Nastran</span>
                     <span class="badge">Machine Learning</span>
-                    <span class="badge">Programmation : Initiation au Langage Python / Matlab - simulink </span>
-                    <span class="badge">Audiovisuel : Maîtrise de Adobe Première Pro </span>
+                    <span class="badge">Programmation : Initiation au Langage Python / MATLAB - Simulink</span>
+                    <span class="badge">Audiovisuel : Maîtrise de Adobe Premiere Pro</span>
                 </div>
             </div>
 
@@ -64,14 +171,13 @@
                 <ul style="list-style: none; padding: 0; margin-top: 15px; line-height: 2;">
                     <li><strong>Français :</strong> Langue maternelle</li>
                     <li><strong>Anglais :</strong> Courant (840 - TOEIC) avec 11 mois d'apprentissage à l'étranger</li>
-                    <li><strong>Espagnol / Autre :</strong> Notion </li>
+                    <li><strong>Espagnol / Autre :</strong> Notions</li>
                 </ul>
             </div>
-
         </section>
 
         <footer>
-            <p>© 2026 Téo Leferme — Portfolio</p>
+            <p style="text-align: center; margin-top: 40px;">© 2026 Téo Leferme — Portfolio</p>
         </footer>
     </div>
 

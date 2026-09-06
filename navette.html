@@ -126,6 +126,21 @@
         }
     </style>
 </head>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const dropdown = document.querySelector(".dropdown > a");
+
+        dropdown.addEventListener("click", function (e) {
+            // Sur mobile/tablette (< 768px)
+            if (window.innerWidth <= 768) {
+                e.preventDefault(); // Empêche d'ouvrir "projets.html" directement
+                const menu = this.nextElementSibling;
+                // Alterne l'affichage du sous-menu
+                menu.style.display = (menu.style.display === "block") ? "none" : "block";
+            }
+        });
+    });
+</script>
 <body>
 
     <nav class="navbar">

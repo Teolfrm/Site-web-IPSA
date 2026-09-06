@@ -65,14 +65,19 @@
             z-index: -1;
         }
 
-        /* Conteneur pour les boutons au-dessus */
-        .action-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
+        /* Alignement des boutons au-dessus des 2 colonnes */
+        .action-buttons-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
             margin-top: 30px;
             margin-bottom: 20px;
-            flex-wrap: wrap;
+        }
+
+        .button-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         /* Style simple et élégant en blanc */
@@ -98,7 +103,7 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 25px;
-            margin-top: 20px;
+            margin-top: 0;
         }
 
         .card {
@@ -110,6 +115,7 @@
         }
 
         @media (max-width: 768px) {
+            .action-buttons-grid,
             .skills-grid {
                 grid-template-columns: 1fr;
             }
@@ -152,8 +158,6 @@
         <section class="hero-main" style="text-align: center; padding: 40px 0 10px 0;">
             <h1 style="font-size: 3.5rem; color: #fff; margin: 15px 0; text-transform: uppercase;">  À la recherche d'un stage de fin d'études de 6 mois à partir de février</h1>
             
-           
-            
             <p class="summary" style="max-width: 800px; margin: 0 auto; line-height: 1.6;">
                 Étudiant passionné par le domaine de l'aéronautique, du spatial et de la conception de systèmes complexes. 
                 Riche de plusieurs projets académiques et associatifs, je mets à profit mes compétences techniques en CAO, 
@@ -161,10 +165,14 @@
             </p>
         </section>
 
-        <!-- Boutons séparés au-dessus des cartes -->
-        <div class="action-buttons">
-            <a href="LEFERME Téo CV - fr.pdf" download class="btn-simple">Télécharger mon CV</a>
-            <a href="https://www.linkedin.com/in/teo-leferme/" target="_blank" rel="noopener noreferrer" class="btn-simple">Mon Profil LinkedIn</a>
+        <!-- Boutons parfaitement centrés au-dessus de chaque colonne -->
+        <div class="action-buttons-grid">
+            <div class="button-wrapper">
+                <a href="LEFERME Téo CV - fr.pdf" download class="btn-simple">Télécharger mon CV</a>
+            </div>
+            <div class="button-wrapper">
+                <a href="https://www.linkedin.com/in/teo-leferme/" target="_blank" rel="noopener noreferrer" class="btn-simple">Mon Profil LinkedIn</a>
+            </div>
         </div>
 
         <!-- Section 2 colonnes en bas -->

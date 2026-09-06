@@ -84,6 +84,29 @@
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
         }
 
+        /* Styles des nouveaux boutons */
+        .btn-action {
+            display: inline-block;
+            width: 100%;
+            box-sizing: border-box;
+            text-align: center;
+            padding: 12px 20px;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #00d2ff, #0072ff);
+            color: #ffffff;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 210, 255, 0.4);
+        }
+
         .badge-container {
             display: flex;
             flex-wrap: wrap;
@@ -141,7 +164,11 @@
 
     <div class="container">
         <section class="hero-main" style="text-align: center; padding: 40px 0;">
-            <h2 style="font-size: 3.5rem; color: #fff; margin: 15px 0; text-transform: uppercase;">À la recherche d'un stage de fin d'études de 6 mois à partir de février</h2>
+            <h1 style="font-size: 3.5rem; color: #fff; margin: 15px 0; text-transform: uppercase;">Téo Leferme</h1>
+            
+            <p class="subtitle" style="font-size: 1.3rem; font-weight: bold; color: #00d2ff; margin-bottom: 20px;">
+                À la recherche d'un stage de fin d'études de 6 mois à partir de février
+            </p>
             
             <p class="summary" style="max-width: 800px; margin: 0 auto; line-height: 1.6;">
                 Étudiant passionné par le domaine de l'aéronautique, du spatial et de la conception de systèmes complexes. 
@@ -153,6 +180,7 @@
         <!-- Section 2 colonnes en bas -->
         <section class="skills-grid">
             <div class="card">
+                <a href="LEFERME Téo CV - fr.pdf" download class="btn-action"> Télécharger mon CV</a>
                 <h3>Compétences Informatiques </h3>
                 <ul class="skills-list" style="list-style: none; padding: 0; margin-top: 15px; line-height: 2; color: #e0e0e0;">
                     <li><strong>Bureautique :</strong> PowerPoint, Excel, Word, LaTeX, Unicode</li>
@@ -165,6 +193,7 @@
             </div>
 
             <div class="card">
+                <a href="https://www.linkedin.com/in/teo-leferme/" target="_blank" rel="noopener noreferrer" class="btn-action"> Mon Profil LinkedIn</a>
                 <h3>Langues</h3>
                 <ul style="list-style: none; padding: 0; margin-top: 15px; line-height: 2;">
                     <li><strong>Français :</strong> Langue maternelle</li>

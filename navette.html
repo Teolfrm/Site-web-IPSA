@@ -6,8 +6,11 @@
     <title>Navette Spatiale — Téo Leferme</title>
     <link rel="stylesheet" href="./style.css">
     
-    <!-- Script Google Model-Viewer pour la 3D -->
-    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
+    <!-- Three.js + OrbitControls + GLTFLoader + MeshoptDecoder -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/libs/meshopt_decoder.module.js" type="module"></script>
     
     <!-- Styles spécifiques bleu IPSA (#00a8ff) et carrousel d'images -->
     <style>
@@ -119,9 +122,116 @@
             background-color: #00a8ff;
         }
 
+        /* --- STYLES DU VISUALISEUR 3D AVEC VUE ÉCLATÉE --- */
+        .viewer-3d-wrapper {
+            position: relative;
+            width: 100%;
+            height: 420px;
+            background-color: #0d1117;
+            border-radius: 8px;
+            border: 1px solid #30363d;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #canvas-3d {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .controls-overlay {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            right: 10px;
+            background: rgba(13, 17, 23, 0.85);
+            backdrop-filter: blur(8px);
+            padding: 10px 14px;
+            border-radius: 8px;
+            border: 1px solid #30363d;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 5;
+            color: #c9d1d9;
+            font-size: 0.85rem;
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .control-group label {
+            font-weight: bold;
+            color: #00a8ff;
+        }
+
+        .slider-control {
+            cursor: pointer;
+            accent-color: #00a8ff;
+        }
+
+        .btn-3d {
+            background: rgba(0, 168, 255, 0.15);
+            color: #00a8ff;
+            border: 1px solid #00a8ff;
+            padding: 4px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.2s ease;
+        }
+
+        .btn-3d:hover {
+            background: #00a8ff;
+            color: #ffffff;
+        }
+
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0d1117;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            color: #00a8ff;
+            font-weight: bold;
+            transition: opacity 0.4s ease;
+        }
+
+        .spinner {
+            border: 3px solid rgba(0, 168, 255, 0.2);
+            border-top: 3px solid #00a8ff;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin-bottom: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
         @media (max-width: 768px) {
             .carousel-slide {
-                height: 300px; /* Adaptation responsive pour mobiles */
+                height: 300px;
+            }
+            .controls-overlay {
+                flex-direction: column;
+                align-items: stretch;
             }
         }
     </style>
@@ -131,11 +241,9 @@
         const dropdown = document.querySelector(".dropdown > a");
 
         dropdown.addEventListener("click", function (e) {
-            // Sur mobile/tablette (< 768px)
             if (window.innerWidth <= 768) {
-                e.preventDefault(); // Empêche d'ouvrir "projets.html" directement
+                e.preventDefault();
                 const menu = this.nextElementSibling;
-                // Alterne l'affichage du sous-menu
                 menu.style.display = (menu.style.display === "block") ? "none" : "block";
             }
         });
@@ -163,45 +271,54 @@
     </nav>
 
     <div class="container">
-        <h1 class="page-title">Navette Spatiale </h1>
+        <h1 class="page-title">Navette Spatiale</h1>
 
         <!-- Grille à 2 colonnes (Texte à gauche / 3D à droite) -->
         <div class="hero">
             
             <!-- Colonne de gauche : Informations du projet -->
             <div class="card">
-                <span class="card-tag">Conception CAO </span>
+                <span class="card-tag">Conception CAO</span>
                 <p style="margin-top: 15px;">
                     Modélisation 3D complète et analyse du centre de masse
                 </p>
 
                 <h3 style="margin-top: 20px; color:#ffffff;">Travaux réalisés par équipe :</h3>
                 <ul>
-                    <li><strong>Modélisation de la navette sur CATIA :</strong> Conception et assemblage des différentes pièces / analyse du centre de masse </li>
-                    <li><strong>Trailer sur Keyshot :</strong> Vidéo explicatives de la mission à travers des rendus keyshot (image ci-dessous ↓) </li>
-                    <li><strong>Analyse Thermique :</strong> Évaluation du transfert de chaleur sur le corps de la navette / ajout d'une protection en MLI </li>
+                    <li><strong>Modélisation de la navette sur CATIA :</strong> Conception et assemblage des différentes pièces / analyse du centre de masse</li>
+                    <li><strong>Trailer sur Keyshot :</strong> Vidéo explicatives de la mission à travers des rendus keyshot (image ci-dessous ↓)</li>
+                    <li><strong>Analyse Thermique :</strong> Évaluation du transfert de chaleur sur le corps de la navette / ajout d'une protection en MLI</li>
                 </ul>
                 <p style="margin-top: 15px;">
                     L'objectif de la mission étant de rallié la Terre à Mars, nous avons conçu une navette spatiale qui vient faire le lien entre le lanceur et le véhicule de croisière. 
                 </p>
             </div>
 
-            <!-- Colonne de droite : Visualisation 3D -->
+            <!-- Colonne de droite : Visualisation 3D avec Vue Éclatée -->
             <div class="card" style="display: flex; flex-direction: column; justify-content: center;">
                 <span class="card-tag">MODÈLE 3D INTERACTIF</span>
-                <h3 style="margin-bottom: 15px;">Visualisation 3D</h3>
+                <h3 style="margin-bottom: 15px;">Visualisation & Vue Éclatée</h3>
                 
-                <model-viewer 
-                    src="Spaceshipposition-v1.glb" 
-                    alt="Modèle 3D Navette Spatiale" 
-                    auto-rotate 
-                    camera-controls 
-                    shadow-intensity="2"
-                    shadow-softness="0.5"
-                    exposure="1.2"
-                    environment-image="neutral"
-                    style="width: 100%; height: 380px; background-color: #0d1117; border-radius: 8px; border: 1px solid #30363d;">
-                </model-viewer>
+                <div class="viewer-3d-wrapper">
+                    <div id="loading" class="loading-overlay">
+                        <div class="spinner"></div>
+                        <span>Chargement du modèle 3D...</span>
+                    </div>
+
+                    <canvas id="canvas-3d"></canvas>
+
+                    <div class="controls-overlay">
+                        <div class="control-group">
+                            <label for="explodeSlider">Éclatement :</label>
+                            <input type="range" id="explodeSlider" class="slider-control" min="0" max="100" value="0">
+                        </div>
+
+                        <div class="control-group">
+                            <button id="toggleColorsBtn" class="btn-3d">Couleurs distinctes</button>
+                            <button id="resetViewBtn" class="btn-3d">Réinitialiser la vue</button>
+                        </div>
+                    </div>
+                </div>
             </div>
 
         </div>
@@ -248,7 +365,7 @@
         </footer>
     </div>
 
-    <!-- Script JavaScript pour le défilement automatique et manuel du carrousel -->
+    <!-- Script JavaScript pour le carrousel d'images -->
     <script>
         let currentIndex = 0;
         const slides = document.querySelectorAll('.carousel-slide');
@@ -289,6 +406,189 @@
         }
 
         startAutoSlide();
+    </script>
+
+    <!-- Script de gestion de la scène 3D (Three.js + Meshopt + Vue éclatée) -->
+    <script type="module">
+        import { MeshoptDecoder } from 'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/jsm/libs/meshopt_decoder.module.js';
+
+        let scene, camera, renderer, controls;
+        let pieces = [];
+        let isColorized = false;
+        let modelCenter = new THREE.Vector3();
+
+        const canvas = document.getElementById('canvas-3d');
+        const wrapper = canvas.parentElement;
+        const loadingOverlay = document.getElementById('loading');
+        const explodeSlider = document.getElementById('explodeSlider');
+        const toggleColorsBtn = document.getElementById('toggleColorsBtn');
+        const resetViewBtn = document.getElementById('resetViewBtn');
+
+        // Palette de couleurs variées et distinctes pour chaque pièce
+        const palette = [
+            0x00a8ff, 0xff4757, 0x2ed573, 0xffa502, 0x9b59b6, 
+            0x1e90ff, 0xff6b81, 0x7bed9f, 0xeccc68, 0xa55eea, 
+            0x70a1ff, 0xff7f50, 0x55efc4, 0xfdcb6e, 0x6c5ce7
+        ];
+
+        function init3D() {
+            // Initialisation Scène, Caméra & Rendu
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x0d1117);
+
+            camera = new THREE.PerspectiveCamera(45, wrapper.clientWidth / wrapper.clientHeight, 0.1, 1000);
+            
+            renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
+            renderer.setSize(wrapper.clientWidth, wrapper.clientHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.outputEncoding = THREE.sRGBEncoding;
+
+            // Contrôles Orbite
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+
+            // Lumières
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+            scene.add(ambientLight);
+
+            const dirLight1 = new THREE.DirectionalLight(0xffffff, 1.2);
+            dirLight1.position.set(5, 10, 7);
+            scene.add(dirLight1);
+
+            const dirLight2 = new THREE.DirectionalLight(0x00a8ff, 0.5);
+            dirLight2.position.set(-5, -5, -5);
+            scene.add(dirLight2);
+
+            // Redimensionnement dynamique
+            window.addEventListener('resize', onWindowResize);
+
+            // Charger le modèle 3D
+            loadModel();
+
+            // Événements contrôles
+            explodeSlider.addEventListener('input', updateExplosion);
+            toggleColorsBtn.addEventListener('click', toggleColors);
+            resetViewBtn.addEventListener('click', resetView);
+
+            // Boucle d'animation
+            animate();
+        }
+
+        function loadModel() {
+            const loader = new THREE.GLTFLoader();
+            loader.setMeshoptDecoder(MeshoptDecoder);
+
+            loader.load(
+                'Spaceshipposition-v1.glb',
+                (gltf) => {
+                    const model = gltf.scene;
+
+                    // Calcul du centre global du modèle
+                    const box = new THREE.Box3().setFromObject(model);
+                    box.getCenter(modelCenter);
+
+                    let colorIndex = 0;
+
+                    model.traverse((child) => {
+                        if (child.isMesh) {
+                            // Sauvegarde du matériau et de la position d'origine
+                            const originalMaterial = child.material.clone();
+                            
+                            // Calcul du centre individuel de la pièce
+                            child.geometry.computeBoundingBox();
+                            const meshBox = child.geometry.boundingBox.clone();
+                            meshBox.applyMatrix4(child.matrixWorld);
+                            const meshCenter = new THREE.Vector3();
+                            meshBox.getCenter(meshCenter);
+
+                            // Direction d'éclatement (du centre global vers le centre de la pièce)
+                            let explodeDir = new THREE.Vector3().subVectors(meshCenter, modelCenter);
+                            if (explodeDir.length() === 0) {
+                                explodeDir.set(Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5);
+                            }
+                            explodeDir.normalize();
+
+                            // Matériau distinct
+                            const colorHex = palette[colorIndex % palette.length];
+                            colorIndex++;
+                            const distinctMaterial = new THREE.MeshStandardMaterial({
+                                color: colorHex,
+                                roughness: 0.4,
+                                metalness: 0.3
+                            });
+
+                            pieces.push({
+                                mesh: child,
+                                origPos: child.position.clone(),
+                                explodeDir: explodeDir,
+                                originalMaterial: originalMaterial,
+                                distinctMaterial: distinctMaterial
+                            });
+                        }
+                    });
+
+                    // Centrer le modèle dans la scène
+                    model.position.sub(modelCenter);
+                    scene.add(model);
+
+                    // Ajuster la caméra
+                    const size = box.getSize(new THREE.Vector3()).length();
+                    camera.position.set(size * 0.8, size * 0.6, size * 1.2);
+                    camera.lookAt(0, 0, 0);
+                    controls.target.set(0, 0, 0);
+                    controls.update();
+
+                    // Cacher le message de chargement
+                    loadingOverlay.style.opacity = '0';
+                    setTimeout(() => loadingOverlay.style.display = 'none', 400);
+                },
+                undefined,
+                (error) => {
+                    console.error('Erreur lors du chargement du fichier GLB :', error);
+                    loadingOverlay.querySelector('span').innerText = 'Erreur de chargement du fichier 3D';
+                }
+            );
+        }
+
+        function updateExplosion() {
+            const factor = parseFloat(explodeSlider.value) / 10;
+            pieces.forEach(p => {
+                const offset = p.explodeDir.clone().multiplyScalar(factor);
+                p.mesh.position.copy(p.origPos).add(offset);
+            });
+        }
+
+        function toggleColors() {
+            isColorized = !isColorized;
+            pieces.forEach(p => {
+                p.mesh.material = isColorized ? p.distinctMaterial : p.originalMaterial;
+            });
+            toggleColorsBtn.innerText = isColorized ? 'Couleurs d\'origine' : 'Couleurs distinctes';
+        }
+
+        function resetView() {
+            explodeSlider.value = 0;
+            updateExplosion();
+            controls.reset();
+        }
+
+        function onWindowResize() {
+            const width = wrapper.clientWidth;
+            const height = wrapper.clientHeight;
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+            renderer.setSize(width, height);
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            renderer.render(scene, camera);
+        }
+
+        // Démarrage de Three.js dès le chargement du DOM
+        document.addEventListener('DOMContentLoaded', init3D);
     </script>
 
 </body>

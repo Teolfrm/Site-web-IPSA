@@ -6,15 +6,10 @@
     <title>Drone Marin — Téo Leferme</title>
     <link rel="stylesheet" href="./style.css">
     
-    <!-- Importation de Three.js et des addons via un Import Map -->
-    <script type="importmap">
-        {
-            "imports": {
-                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
-            }
-        }
-    </script>
+    <!-- Three.js + OrbitControls + GLTFLoader -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
     
     <!-- Styles spécifiques bleu IPSA (#00a8ff) et galerie d'images -->
     <style>
@@ -33,45 +28,107 @@
             background-color: #0086cc !important;
         }
 
-        /* --- STYLES CONTRÔLES 3D (Éclatement & Couleur) --- */
-        .viewer-controls {
-            margin-top: 15px;
+        /* --- STYLES DU VISUALISEUR 3D AVEC VUE ÉCLATÉE --- */
+        .viewer-3d-wrapper {
+            position: relative;
+            width: 100%;
+            height: 420px;
+            background-color: #0d1117;
+            border-radius: 8px;
+            border: 1px solid #30363d;
+            overflow: hidden;
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            background: rgba(0, 0, 0, 0.3);
-            padding: 12px;
-            border-radius: 6px;
-            border: 1px solid #30363d;
         }
+
+        #canvas-3d {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .controls-overlay {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            right: 10px;
+            background: rgba(13, 17, 23, 0.85);
+            backdrop-filter: blur(8px);
+            padding: 10px 14px;
+            border-radius: 8px;
+            border: 1px solid #30363d;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 5;
+            color: #c9d1d9;
+            font-size: 0.85rem;
+        }
+
         .control-group {
             display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-        .control-group label {
-            font-size: 0.85rem;
-            color: #c9d1d9;
-        }
-        .control-group input[type="range"] {
-            cursor: pointer;
-            width: 100%;
-        }
-        .color-palette {
-            display: flex;
+            align-items: center;
             gap: 8px;
         }
-        .color-btn {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            border: 2px solid #30363d;
-            cursor: pointer;
-            transition: transform 0.2s, border-color 0.2s;
+
+        .control-group label {
+            font-weight: bold;
+            color: #00a8ff;
         }
-        .color-btn:hover {
-            transform: scale(1.1);
-            border-color: #fff;
+
+        .slider-control {
+            cursor: pointer;
+            accent-color: #00a8ff;
+        }
+
+        .btn-3d {
+            background: rgba(0, 168, 255, 0.15);
+            color: #00a8ff;
+            border: 1px solid #00a8ff;
+            padding: 4px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.2s ease;
+        }
+
+        .btn-3d:hover {
+            background: #00a8ff;
+            color: #ffffff;
+        }
+
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0d1117;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            color: #00a8ff;
+            font-weight: bold;
+            transition: opacity 0.4s ease;
+        }
+
+        .spinner {
+            border: 3px solid rgba(0, 168, 255, 0.2);
+            border-top: 3px solid #00a8ff;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin-bottom: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         /* --- STYLES GALERIE 2 IMAGES --- */
@@ -102,6 +159,13 @@
             width: 100%;
             height: 100%;
             object-fit: contain;
+        }
+
+        @media (max-width: 768px) {
+            .controls-overlay {
+                flex-direction: column;
+                align-items: stretch;
+            }
         }
     </style>
 </head>
@@ -162,30 +226,28 @@
                 </p>
             </div>
 
-            <!-- Colonne de droite : Visualisation 3D interactive Three.js -->
-            <div class="card" style="display: flex; flex-direction: column; justify-content: space-between;">
-                <div>
-                    <span class="card-tag">MODÈLE 3D INTERACTIF</span>
-                    <h3 style="margin-bottom: 15px;">Visualisation 3D</h3>
-                    
-                    <!-- Conteneur où Three.js va insérer le rendu 3D -->
-                    <div id="canvas-container" style="width: 100%; height: 300px; background-color: #0d1117; border-radius: 8px; border: 1px solid #30363d; position: relative; overflow: hidden;"></div>
-                </div>
-
-                <!-- Panneau de contrôle interactif (Éclatement et Couleur) -->
-                <div class="viewer-controls">
-                    <div class="control-group">
-                        <label for="explosionSlider"><strong>Vue Éclatée :</strong></label>
-                        <input type="range" id="explosionSlider" min="0" max="1" step="0.01" value="0">
+            <!-- Colonne de droite : Visualisation 3D interactive -->
+            <div class="card" style="display: flex; flex-direction: column; justify-content: center;">
+                <span class="card-tag">MODÈLE 3D INTERACTIF</span>
+                <h3 style="margin-bottom: 15px;">Visualisation & Vue Éclatée</h3>
+                
+                <div class="viewer-3d-wrapper">
+                    <div id="loading" class="loading-overlay">
+                        <div class="spinner"></div>
+                        <span>Chargement du modèle 3D...</span>
                     </div>
-                    <div class="control-group">
-                        <label><strong>Personnalisation couleur :</strong></label>
-                        <div class="color-palette">
-                            <div class="color-btn" style="background-color: #00a8ff;" data-color="#00a8ff" title="Bleu IPSA"></div>
-                            <div class="color-btn" style="background-color: #ff4757;" data-color="#ff4757" title="Rouge Sécurité"></div>
-                            <div class="color-btn" style="background-color: #2ed573;" data-color="#2ed573" title="Vert Écologique"></div>
-                            <div class="color-btn" style="background-color: #ffa502;" data-color="#ffa502" title="Orange Signalétique"></div>
-                            <div class="color-btn" style="background-color: #f1f2f6;" data-color="#f1f2f6" title="Blanc Inox"></div>
+
+                    <canvas id="canvas-3d"></canvas>
+
+                    <div class="controls-overlay">
+                        <div class="control-group">
+                            <label for="explodeSlider">Éclatement :</label>
+                            <input type="range" id="explodeSlider" class="slider-control" min="0" max="100" value="0">
+                        </div>
+
+                        <div class="control-group">
+                            <button id="toggleColorsBtn" class="btn-3d">Couleurs distinctes</button>
+                            <button id="resetViewBtn" class="btn-3d">Réinitialiser la vue</button>
                         </div>
                     </div>
                 </div>
@@ -212,118 +274,194 @@
         </footer>
     </div>
 
-    <!-- Script de gestion Three.js pour le modèle 3D -->
-    <script type="module">
-        import * as THREE from 'three';
-        import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+    <!-- Script de gestion de la scène 3D (Three.js + Vue éclatée + Couleurs) -->
+    <script>
+        let scene, camera, renderer, controls;
+        let pieces = [];
+        let isColorized = false;
+        let modelCenter = new THREE.Vector3();
+        let initialCameraPosition = new THREE.Vector3(0, 100, 350);
+        let controlsTarget = new THREE.Vector3();
 
-        const container = document.getElementById('canvas-container');
+        const canvas = document.getElementById('canvas-3d');
+        const wrapper = canvas.parentElement;
+        const loadingOverlay = document.getElementById('loading');
+        const explodeSlider = document.getElementById('explodeSlider');
+        const toggleColorsBtn = document.getElementById('toggleColorsBtn');
+        const resetViewBtn = document.getElementById('resetViewBtn');
 
-        // 1. Scène, Caméra et Rendu
-        const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x0d1117);
-
-        const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
-        camera.position.set(0, 100, 350);
-
-        const renderer = new THREE.WebGLRenderer({ antialias: true });
-        renderer.setSize(container.clientWidth, container.clientHeight);
-        container.appendChild(renderer.domElement);
-
-        // Contrôles de la souris
-        const controls = new OrbitControls(camera, renderer.domElement);
-        controls.enableDamping = true;
-
-        // Éclairage
-        const ambientLight = new THREE.AmbientLight(0xffffff, 1.2);
-        scene.add(ambientLight);
-
-        const directionalLight = new THREE.DirectionalLight(0xffffff, 1.8);
-        directionalLight.position.set(200, 300, 200);
-        scene.add(directionalLight);
-
-        // Variables pour l'éclatement
-        let submarineParts = [];
-        const maxDistance = 120; // Distance d'écartement max
-
-        // Vecteurs d'éclatement pré-assignés pour les nœuds du modèle
-        const explosionDirections = [
-            new THREE.Vector3(0, 0, 0),   // Node1 (Centre)
-            new THREE.Vector3(0, 1, 0),   // Node2 (Haut)
-            new THREE.Vector3(-1, 0, 0),  // Node3 (Gauche)
-            new THREE.Vector3(1, 0, 0),   // Node4 (Droite)
-            new THREE.Vector3(0, 0, -1),  // Node5 (Arrière)
-            new THREE.Vector3(0, -1, 0)   // Node6 (Bas)
+        // Palette de couleurs distinctes et modernes pour les pièces
+        const palette = [
+            0x00a8ff, 0xff4757, 0x2ed573, 0xffa502, 0x9b59b6, 
+            0x1e90ff, 0xff6b81, 0x7bed9f, 0xeccc68, 0xa55eea, 
+            0x70a1ff, 0xff7f50, 0x55efc4, 0xfdcb6e, 0x6c5ce7
         ];
 
-        // 2. Chargement du fichier GLB
-        const loader = new GLTFLoader();
-        loader.load('ImageToStl.com_Product1.glb', function (gltf) {
-            const model = gltf.scene;
-            scene.add(model);
+        function init3D() {
+            // 1. Scène, Caméra & Rendu (avec correction des plans de découpe et encodage)
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x0d1117);
 
-            let index = 0;
-            model.traverse((child) => {
-                if (child.isMesh || child.name.startsWith('Node')) {
-                    submarineParts.push({
-                        object: child,
-                        originPosition: child.position.clone(),
-                        direction: explosionDirections[index % explosionDirections.length]
+            camera = new THREE.PerspectiveCamera(45, wrapper.clientWidth / wrapper.clientHeight, 0.1, 2000);
+            camera.position.copy(initialCameraPosition);
+            
+            renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
+            renderer.setSize(wrapper.clientWidth, wrapper.clientHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.outputEncoding = THREE.sRGBEncoding;
+
+            // Contrôles Orbite
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+
+            // Éclairage optimisé pour éviter les zones sombres
+            const ambientLight = new THREE.AmbientLight(0xffffff, 1.0);
+            scene.add(ambientLight);
+
+            const dirLight1 = new THREE.DirectionalLight(0xffffff, 1.5);
+            dirLight1.position.set(200, 400, 300);
+            scene.add(dirLight1);
+
+            const dirLight2 = new THREE.DirectionalLight(0x00a8ff, 0.6);
+            dirLight2.position.set(-200, -200, -200);
+            scene.add(dirLight2);
+
+            // Redimensionnement dynamique
+            window.addEventListener('resize', onWindowResize);
+
+            // Charger le modèle GLB du drone marin
+            loadModel();
+
+            // Événements d'interaction
+            explodeSlider.addEventListener('input', updateExplosion);
+            toggleColorsBtn.addEventListener('click', toggleColors);
+            resetViewBtn.addEventListener('click', resetView);
+
+            // Boucle d'animation
+            animate();
+        }
+
+        function loadModel() {
+            const loader = new THREE.GLTFLoader();
+
+            loader.load(
+                'ImageToStl.com_Product1.glb',
+                (gltf) => {
+                    const model = gltf.scene;
+
+                    // Calcul du centre global et de la taille du modèle pour un cadrage parfait
+                    const box = new THREE.Box3().setFromObject(model);
+                    box.getCenter(modelCenter);
+                    box.getCenter(controlsTarget);
+                    controls.target.copy(controlsTarget);
+
+                    const size = box.getSize(new THREE.Vector3());
+                    const maxDim = Math.max(size.x, size.y, size.z);
+                    camera.position.set(modelCenter.x, modelCenter.y + maxDim * 0.8, modelCenter.z + maxDim * 2.2);
+                    initialCameraPosition.copy(camera.position);
+                    camera.lookAt(modelCenter);
+
+                    scene.add(model);
+
+                    let colorIndex = 0;
+
+                    model.traverse((child) => {
+                        if (child.isMesh) {
+                            // Cloner le matériau d'origine pour préserver l'aspect de base
+                            const originalMaterial = child.material.clone();
+                            
+                            // Calcul du centre individuel de la pièce pour l'éclatement
+                            child.geometry.computeBoundingBox();
+                            const meshBox = child.geometry.boundingBox.clone();
+                            meshBox.applyMatrix4(child.matrixWorld);
+                            const meshCenter = new THREE.Vector3();
+                            meshBox.getCenter(meshCenter);
+
+                            // Calcul de la direction d'éclatement (depuis le centre du modèle vers la pièce)
+                            let explodeDir = new THREE.Vector3().subVectors(meshCenter, modelCenter);
+                            if (explodeDir.length() === 0) {
+                                explodeDir.set(Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5);
+                            }
+                            explodeDir.normalize();
+
+                            // Création du matériau coloré distinct
+                            const colorHex = palette[colorIndex % palette.length];
+                            colorIndex++;
+                            const distinctMaterial = new THREE.MeshStandardMaterial({
+                                color: colorHex,
+                                roughness: 0.3,
+                                metalness: 0.2
+                            });
+
+                            pieces.push({
+                                mesh: child,
+                                originalPosition: child.position.clone(),
+                                originalMaterial: originalMaterial,
+                                distinctMaterial: distinctMaterial,
+                                direction: explodeDir
+                            });
+                        }
                     });
-                    index++;
-                }
-            });
-        }, undefined, function (error) {
-            console.error('Erreur de chargement du modèle GLB :', error);
-        });
 
-        // 3. Fonction de mise à jour de l'éclatement
-        function updateExplosion(value) {
-            submarineParts.forEach((part) => {
-                const dir = part.direction;
-                part.object.position.x = part.originPosition.x + (dir.x * value * maxDistance);
-                part.object.position.y = part.originPosition.y + (dir.y * value * maxDistance);
-                part.object.position.z = part.originPosition.z + (dir.z * value * maxDistance);
+                    // Masquer l'écran de chargement
+                    loadingOverlay.style.opacity = '0';
+                    setTimeout(() => loadingOverlay.style.display = 'none', 400);
+                },
+                (xhr) => {
+                    // Progression du chargement (optionnel)
+                },
+                (error) => {
+                    console.error('Erreur lors du chargement du fichier GLB :', error);
+                    loadingOverlay.querySelector('span').innerText = 'Erreur de chargement du modèle 3D';
+                }
+            );
+        }
+
+        function updateExplosion() {
+            const progress = parseFloat(explodeSlider.value) / 100;
+            const maxDistance = 150; // Distance maximale d'écartement
+
+            pieces.forEach(p => {
+                p.mesh.position.x = p.originalPosition.x + (p.direction.x * progress * maxDistance);
+                p.mesh.position.y = p.originalPosition.y + (p.direction.y * progress * maxDistance);
+                p.mesh.position.z = p.originalPosition.z + (p.direction.z * progress * maxDistance);
             });
         }
 
-        // Écouteur d'événement sur le curseur d'éclatement
-        const slider = document.getElementById('explosionSlider');
-        slider.addEventListener('input', (event) => {
-            updateExplosion(parseFloat(event.target.value));
-        });
+        function toggleColors() {
+            isColorized = !isColorized;
+            toggleColorsBtn.style.background = isColorized ? '#00a8ff' : 'rgba(0, 168, 255, 0.15)';
+            toggleColorsBtn.style.color = isColorized ? '#ffffff' : '#00a8ff';
+            toggleColorsBtn.innerText = isColorized ? 'Couleurs d\'origine' : 'Couleurs distinctes';
 
-        // 4. Fonction de changement de couleur
-        const colorButtons = document.querySelectorAll('.color-btn');
-        colorButtons.forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const newColor = e.target.getAttribute('data-color');
-                scene.traverse((child) => {
-                    if (child.isMesh) {
-                        if (child.material) {
-                            child.material.color.set(newColor);
-                        }
-                    }
-                });
+            pieces.forEach(p => {
+                p.mesh.material = isColorized ? p.distinctMaterial : p.originalMaterial;
             });
-        });
+        }
 
-        // Redimensionnement dynamique de la fenêtre
-        window.addEventListener('resize', () => {
-            camera.aspect = container.clientWidth / container.clientHeight;
+        function resetView() {
+            explodeSlider.value = 0;
+            updateExplosion();
+            camera.position.copy(initialCameraPosition);
+            controls.target.copy(controlsTarget);
+            controls.update();
+        }
+
+        function onWindowResize() {
+            camera.aspect = wrapper.clientWidth / wrapper.clientHeight;
             camera.updateProjectionMatrix();
-            renderer.setSize(container.clientWidth, container.clientHeight);
-        });
+            renderer.setSize(wrapper.clientWidth, wrapper.clientHeight);
+        }
 
-        // Boucle d'animation
         function animate() {
             requestAnimationFrame(animate);
             controls.update();
             renderer.render(scene, camera);
         }
 
-        animate();
+        // Lancement au chargement de la page
+        init3D();
     </script>
 </body>
 </html>

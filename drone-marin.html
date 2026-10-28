@@ -274,13 +274,13 @@
         </footer>
     </div>
 
-    <!-- Script de gestion de la scène 3D (Three.js + Vue éclatée + Couleurs) -->
+    <!-- Script de gestion de la scène 3D (Corrigé pour le cadrage automatique du modèle) -->
     <script>
         let scene, camera, renderer, controls;
         let pieces = [];
         let isColorized = false;
         let modelCenter = new THREE.Vector3();
-        let initialCameraPosition = new THREE.Vector3(0, 100, 350);
+        let initialCameraPosition = new THREE.Vector3();
         let controlsTarget = new THREE.Vector3();
 
         const canvas = document.getElementById('canvas-3d');
@@ -290,7 +290,7 @@
         const toggleColorsBtn = document.getElementById('toggleColorsBtn');
         const resetViewBtn = document.getElementById('resetViewBtn');
 
-        // Palette de couleurs distinctes et modernes pour les pièces
+        // Palette de couleurs distinctes
         const palette = [
             0x00a8ff, 0xff4757, 0x2ed573, 0xffa502, 0x9b59b6, 
             0x1e90ff, 0xff6b81, 0x7bed9f, 0xeccc68, 0xa55eea, 
@@ -301,8 +301,7 @@
             scene = new THREE.Scene();
             scene.background = new THREE.Color(0x0d1117);
 
-            camera = new THREE.PerspectiveCamera(45, wrapper.clientWidth / wrapper.clientHeight, 0.1, 2000);
-            camera.position.copy(initialCameraPosition);
+            camera = new THREE.PerspectiveCamera(45, wrapper.clientWidth / wrapper.clientHeight, 0.1, 5000);
             
             renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
             renderer.setSize(wrapper.clientWidth, wrapper.clientHeight);
@@ -313,15 +312,15 @@
             controls.enableDamping = true;
             controls.dampingFactor = 0.05;
 
-            // Éclairage adouci pour ne pas saturer les matériaux en blanc éclatant
-            const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+            // Éclairage équilibré
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
             scene.add(ambientLight);
 
-            const dirLight1 = new THREE.DirectionalLight(0xffffff, 0.8);
+            const dirLight1 = new THREE.DirectionalLight(0xffffff, 1.0);
             dirLight1.position.set(200, 400, 300);
             scene.add(dirLight1);
 
-            const dirLight2 = new THREE.DirectionalLight(0x00a8ff, 0.3);
+            const dirLight2 = new THREE.DirectionalLight(0x00a8ff, 0.4);
             dirLight2.position.set(-200, -200, -200);
             scene.add(dirLight2);
 
@@ -344,16 +343,26 @@
                 (gltf) => {
                     const model = gltf.scene;
 
+                    // Centrage automatique rigoureux basé sur la boîte englobante
                     const box = new THREE.Box3().setFromObject(model);
                     box.getCenter(modelCenter);
-                    box.getCenter(controlsTarget);
+                    
+                    // Recentrer l'objet sur l'origine (0,0,0) pour éviter qu'il soit décalé hors champ
+                    model.position.sub(modelCenter);
+
+                    // Recalculer la boîte après recentrage
+                    const newBox = new THREE.Box3().setFromObject(model);
+                    newBox.getCenter(modelCenter); // Doit être (0,0,0) ou très proche
+                    newBox.getCenter(controlsTarget);
                     controls.target.copy(controlsTarget);
 
-                    const size = box.getSize(new THREE.Vector3());
+                    const size = newBox.getSize(new THREE.Vector3());
                     const maxDim = Math.max(size.x, size.y, size.z);
-                    camera.position.set(modelCenter.x, modelCenter.y + maxDim * 0.8, modelCenter.z + maxDim * 2.2);
-                    initialCameraPosition.copy(camera.position);
-                    camera.lookAt(modelCenter);
+                    
+                    // Positionner la caméra de façon à voir l'intégralité du modèle en face
+                    initialCameraPosition.set(0, maxDim * 0.5, maxDim * 2.5);
+                    camera.position.copy(initialCameraPosition);
+                    camera.lookAt(controlsTarget);
 
                     scene.add(model);
 
@@ -361,10 +370,8 @@
 
                     model.traverse((child) => {
                         if (child.isMesh) {
-                            // Sauvegarde du matériau d'origine du fichier GLB
                             const originalMaterial = child.material.clone();
 
-                            // Création du matériau coloré de la palette
                             const colorHex = palette[colorIndex % palette.length];
                             colorIndex++;
                             const distinctMaterial = new THREE.MeshStandardMaterial({
@@ -373,7 +380,6 @@
                                 metalness: 0.1
                             });
 
-                            // Calcul de la direction d'éclatement
                             child.geometry.computeBoundingBox();
                             const meshBox = child.geometry.boundingBox.clone();
                             meshBox.applyMatrix4(child.matrixWorld);
@@ -401,7 +407,7 @@
                 },
                 undefined,
                 (error) => {
-                    console.error('Erreur lors du chargement du fichier GLB :', error);
+                    console.error('Erreur de chargement :', error);
                     loadingOverlay.querySelector('span').innerText = 'Erreur de chargement du modèle 3D';
                 }
             );
@@ -424,7 +430,6 @@
             toggleColorsBtn.style.color = isColorized ? '#ffffff' : '#00a8ff';
             toggleColorsBtn.innerText = isColorized ? 'Couleurs d\'origine' : 'Couleurs distinctes';
 
-            // Alterne entre le matériau d'origine du GLB et la palette colorée
             pieces.forEach(p => {
                 p.mesh.material = isColorized ? p.distinctMaterial : p.originalMaterial;
             });

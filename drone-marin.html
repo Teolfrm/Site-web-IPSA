@@ -274,7 +274,7 @@
         </footer>
     </div>
 
-    <!-- Script de gestion de la scène 3D (Écrasement forcé des matériaux pour les couleurs) -->
+    <!-- Script de gestion de la scène 3D (Nettoyage des vertex colors + application des couleurs) -->
     <script>
         let scene, camera, renderer, controls;
         let pieces = [];
@@ -291,7 +291,7 @@
         const toggleColorsBtn = document.getElementById('toggleColorsBtn');
         const resetViewBtn = document.getElementById('resetViewBtn');
 
-        // Palette large et bien contrastée pour les pièces du drone
+        // Palette large et contrastée
         const palette = [
             0x00a8ff, 0xff4757, 0x2ed573, 0xffa502, 0x9b59b6, 
             0x1e90ff, 0xff6b81, 0x7bed9f, 0xeccc68, 0xa55eea, 
@@ -315,7 +315,7 @@
             controls.enableDamping = true;
             controls.dampingFactor = 0.05;
 
-            // Éclairage neutre et puissant
+            // Éclairage homogène
             const ambientLight = new THREE.AmbientLight(0xffffff, 1.2);
             scene.add(ambientLight);
 
@@ -369,17 +369,22 @@
 
                     model.traverse((child) => {
                         if (child.isMesh) {
-                            // Matériau d'origine conservé (souvent blanc/gris neutre sur ce type d'export)
+                            // SUPPRESSION CRUCIALE : Enlever les vertex colors du GLB pour laisser place aux couleurs de la palette
+                            if (child.geometry && child.geometry.attributes.color) {
+                                child.geometry.deleteAttribute('color');
+                            }
+
+                            // Sauvegarde du matériau d'origine
                             const originalMaterial = child.material ? child.material.clone() : new THREE.MeshStandardMaterial({color: 0xcccccc});
 
-                            // Création forcée d'un nouveau matériau coloré unique pour chaque pièce
+                            // Création du matériau distinct avec la couleur de la palette
                             const colorHex = palette[colorIndex % palette.length];
                             colorIndex++;
                             const distinctMaterial = new THREE.MeshStandardMaterial({
                                 color: colorHex,
                                 roughness: 0.3,
                                 metalness: 0.1,
-                                side: THREE.DoubleSide // Évite les faces invisibles
+                                vertexColors: false // Force l'utilisation exclusive de la couleur de script
                             });
 
                             // Calcul de la direction d'éclatement individuelle
@@ -433,7 +438,7 @@
             toggleColorsBtn.style.color = isColorized ? '#ffffff' : '#00a8ff';
             toggleColorsBtn.innerText = isColorized ? 'Couleurs d\'origine' : 'Couleurs distinctes';
 
-            // Écrase et applique les matériaux colorés de la palette sur chaque pièce
+            // Application des couleurs de la palette en écrasant les matériaux
             pieces.forEach(p => {
                 p.mesh.material = isColorized ? p.distinctMaterial : p.originalMaterial;
             });

@@ -274,7 +274,7 @@
         </footer>
     </div>
 
-    <!-- Script de gestion de la scène 3D (Corrigé pour l'éclatement ample et forçage des couleurs) -->
+    <!-- Script de gestion de la scène 3D (Corrigé pour forcer des couleurs bien distinctes par pièce) -->
     <script>
         let scene, camera, renderer, controls;
         let pieces = [];
@@ -291,11 +291,12 @@
         const toggleColorsBtn = document.getElementById('toggleColorsBtn');
         const resetViewBtn = document.getElementById('resetViewBtn');
 
-        // Palette de couleurs distinctes et éclatantes
+        // Palette de couleurs riches et contrastées
         const palette = [
             0x00a8ff, 0xff4757, 0x2ed573, 0xffa502, 0x9b59b6, 
             0x1e90ff, 0xff6b81, 0x7bed9f, 0xeccc68, 0xa55eea, 
-            0x70a1ff, 0xff7f50, 0x55efc4, 0xfdcb6e, 0x6c5ce7
+            0x70a1ff, 0xff7f50, 0x55efc4, 0xfdcb6e, 0x6c5ce7,
+            0x00d2d3, 0xff6b6b, 0x48dbfb, 0x1dd1a1, 0xf368e0
         ];
 
         function init3D() {
@@ -313,15 +314,15 @@
             controls.enableDamping = true;
             controls.dampingFactor = 0.05;
 
-            // Éclairage équilibré
-            const ambientLight = new THREE.AmbientLight(0xffffff, 0.9);
+            // Éclairage renforcé pour bien faire ressortir les couleurs
+            const ambientLight = new THREE.AmbientLight(0xffffff, 1.0);
             scene.add(ambientLight);
 
-            const dirLight1 = new THREE.DirectionalLight(0xffffff, 1.2);
+            const dirLight1 = new THREE.DirectionalLight(0xffffff, 1.4);
             dirLight1.position.set(200, 400, 300);
             scene.add(dirLight1);
 
-            const dirLight2 = new THREE.DirectionalLight(0x00a8ff, 0.5);
+            const dirLight2 = new THREE.DirectionalLight(0xffffff, 0.6);
             dirLight2.position.set(-200, -200, -200);
             scene.add(dirLight2);
 
@@ -367,10 +368,10 @@
 
                     model.traverse((child) => {
                         if (child.isMesh) {
-                            // Sauvegarde sécurisée du matériau d'origine
-                            const originalMaterial = child.material ? child.material.clone() : new THREE.MeshStandardMaterial({color: 0xffffff});
+                            // Sauvegarde du matériau neutre d'origine
+                            let originalMaterial = child.material ? child.material.clone() : new THREE.MeshStandardMaterial({color: 0xcccccc});
 
-                            // Création du matériau distinct coloré
+                            // Attribution forcée d'une couleur unique issue de la palette pour le mode distinct
                             const colorHex = palette[colorIndex % palette.length];
                             colorIndex++;
                             const distinctMaterial = new THREE.MeshStandardMaterial({
@@ -379,7 +380,7 @@
                                 metalness: 0.2
                             });
 
-                            // Calcul de la direction d'éclatement individuelle par pièce
+                            // Calcul de la direction d'éclatement individuelle de chaque pièce
                             child.geometry.computeBoundingBox();
                             const meshBox = child.geometry.boundingBox.clone();
                             meshBox.applyMatrix4(child.matrixWorld);
@@ -415,7 +416,6 @@
 
         function updateExplosion() {
             const progress = parseFloat(explodeSlider.value) / 100;
-            // Amplification de la distance d'éclatement par rapport à la taille réelle du modèle
             const maxDistance = modelSizeMax * 1.2;
 
             pieces.forEach(p => {
@@ -431,7 +431,7 @@
             toggleColorsBtn.style.color = isColorized ? '#ffffff' : '#00a8ff';
             toggleColorsBtn.innerText = isColorized ? 'Couleurs d\'origine' : 'Couleurs distinctes';
 
-            // Application directe des matériaux distincts ou originaux sur chaque mesh
+            // Bascule instantanée entre le matériau d'origine du fichier GLB et la palette colorée
             pieces.forEach(p => {
                 p.mesh.material = isColorized ? p.distinctMaterial : p.originalMaterial;
             });

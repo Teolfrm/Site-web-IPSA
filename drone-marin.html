@@ -274,7 +274,7 @@
         </footer>
     </div>
 
-    <!-- Script de gestion de la scène 3D (Corrigé pour le cadrage automatique du modèle) -->
+    <!-- Script de gestion de la scène 3D (Corrigé pour l'éclatement ample et forçage des couleurs) -->
     <script>
         let scene, camera, renderer, controls;
         let pieces = [];
@@ -282,6 +282,7 @@
         let modelCenter = new THREE.Vector3();
         let initialCameraPosition = new THREE.Vector3();
         let controlsTarget = new THREE.Vector3();
+        let modelSizeMax = 100;
 
         const canvas = document.getElementById('canvas-3d');
         const wrapper = canvas.parentElement;
@@ -290,7 +291,7 @@
         const toggleColorsBtn = document.getElementById('toggleColorsBtn');
         const resetViewBtn = document.getElementById('resetViewBtn');
 
-        // Palette de couleurs distinctes
+        // Palette de couleurs distinctes et éclatantes
         const palette = [
             0x00a8ff, 0xff4757, 0x2ed573, 0xffa502, 0x9b59b6, 
             0x1e90ff, 0xff6b81, 0x7bed9f, 0xeccc68, 0xa55eea, 
@@ -313,14 +314,14 @@
             controls.dampingFactor = 0.05;
 
             // Éclairage équilibré
-            const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.9);
             scene.add(ambientLight);
 
-            const dirLight1 = new THREE.DirectionalLight(0xffffff, 1.0);
+            const dirLight1 = new THREE.DirectionalLight(0xffffff, 1.2);
             dirLight1.position.set(200, 400, 300);
             scene.add(dirLight1);
 
-            const dirLight2 = new THREE.DirectionalLight(0x00a8ff, 0.4);
+            const dirLight2 = new THREE.DirectionalLight(0x00a8ff, 0.5);
             dirLight2.position.set(-200, -200, -200);
             scene.add(dirLight2);
 
@@ -343,24 +344,20 @@
                 (gltf) => {
                     const model = gltf.scene;
 
-                    // Centrage automatique rigoureux basé sur la boîte englobante
+                    // Centrage automatique du modèle
                     const box = new THREE.Box3().setFromObject(model);
                     box.getCenter(modelCenter);
-                    
-                    // Recentrer l'objet sur l'origine (0,0,0) pour éviter qu'il soit décalé hors champ
                     model.position.sub(modelCenter);
 
-                    // Recalculer la boîte après recentrage
                     const newBox = new THREE.Box3().setFromObject(model);
-                    newBox.getCenter(modelCenter); // Doit être (0,0,0) ou très proche
+                    newBox.getCenter(modelCenter);
                     newBox.getCenter(controlsTarget);
                     controls.target.copy(controlsTarget);
 
                     const size = newBox.getSize(new THREE.Vector3());
-                    const maxDim = Math.max(size.x, size.y, size.z);
+                    modelSizeMax = Math.max(size.x, size.y, size.z);
                     
-                    // Positionner la caméra de façon à voir l'intégralité du modèle en face
-                    initialCameraPosition.set(0, maxDim * 0.5, maxDim * 2.5);
+                    initialCameraPosition.set(0, modelSizeMax * 0.5, modelSizeMax * 2.2);
                     camera.position.copy(initialCameraPosition);
                     camera.lookAt(controlsTarget);
 
@@ -370,16 +367,19 @@
 
                     model.traverse((child) => {
                         if (child.isMesh) {
-                            const originalMaterial = child.material.clone();
+                            // Sauvegarde sécurisée du matériau d'origine
+                            const originalMaterial = child.material ? child.material.clone() : new THREE.MeshStandardMaterial({color: 0xffffff});
 
+                            // Création du matériau distinct coloré
                             const colorHex = palette[colorIndex % palette.length];
                             colorIndex++;
                             const distinctMaterial = new THREE.MeshStandardMaterial({
                                 color: colorHex,
-                                roughness: 0.4,
-                                metalness: 0.1
+                                roughness: 0.3,
+                                metalness: 0.2
                             });
 
+                            // Calcul de la direction d'éclatement individuelle par pièce
                             child.geometry.computeBoundingBox();
                             const meshBox = child.geometry.boundingBox.clone();
                             meshBox.applyMatrix4(child.matrixWorld);
@@ -415,7 +415,8 @@
 
         function updateExplosion() {
             const progress = parseFloat(explodeSlider.value) / 100;
-            const maxDistance = 150;
+            // Amplification de la distance d'éclatement par rapport à la taille réelle du modèle
+            const maxDistance = modelSizeMax * 1.2;
 
             pieces.forEach(p => {
                 p.mesh.position.x = p.originalPosition.x + (p.direction.x * progress * maxDistance);
@@ -430,6 +431,7 @@
             toggleColorsBtn.style.color = isColorized ? '#ffffff' : '#00a8ff';
             toggleColorsBtn.innerText = isColorized ? 'Couleurs d\'origine' : 'Couleurs distinctes';
 
+            // Application directe des matériaux distincts ou originaux sur chaque mesh
             pieces.forEach(p => {
                 p.mesh.material = isColorized ? p.distinctMaterial : p.originalMaterial;
             });

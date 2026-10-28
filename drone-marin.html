@@ -6,24 +6,32 @@
     <title>Drone Marin — Téo Leferme</title>
     <link rel="stylesheet" href="./style.css">
     
-    <!-- Script Google Model-Viewer pour la 3D -->
+    <!-- Script Google Model-Viewer pour la 3D (Vérifiez si une version plus récente est dispo, ex: v4.0.0) -->
     <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
     
-    <!-- Styles spécifiques bleu IPSA (#00a8ff) et galerie d'images -->
+    <!-- Styles spécifiques bleu IPSA (#00a8ff), galerie, et contrôles 3D -->
     <style>
+        :root {
+            --ipsa-blue: #00a8ff;
+            --ipsa-blue-hover: #0086cc;
+            --bg-dark: #0d1117;
+            --border-dark: #30363d;
+            --text-white: #ffffff;
+        }
+
         .card-tag {
             background: rgba(0, 168, 255, 0.15) !important;
-            color: #00a8ff !important;
+            color: var(--ipsa-blue) !important;
         }
         .card:hover {
-            border-color: #00a8ff !important;
+            border-color: var(--ipsa-blue) !important;
         }
         .btn-contact {
-            background-color: #00a8ff !important;
-            color: #ffffff !important;
+            background-color: var(--ipsa-blue) !important;
+            color: var(--text-white) !important;
         }
         .btn-contact:hover {
-            background-color: #0086cc !important;
+            background-color: var(--ipsa-blue-hover) !important;
         }
 
         /* --- STYLES GALERIE 2 IMAGES --- */
@@ -40,8 +48,8 @@
         }
 
         .gallery-item {
-            background-color: #0d1117;
-            border: 1px solid #30363d;
+            background-color: var(--bg-dark);
+            border: 1px solid var(--border-dark);
             border-radius: 8px;
             overflow: hidden;
             height: 380px;
@@ -49,113 +57,3 @@
             align-items: center;
             justify-content: center;
         }
-
-        .gallery-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain; /* L'image s'affiche entièrement sans être coupée */
-        }
-    </style>
-</head>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const dropdown = document.querySelector(".dropdown > a");
-
-        dropdown.addEventListener("click", function (e) {
-            // Sur mobile/tablette (< 768px)
-            if (window.innerWidth <= 768) {
-                e.preventDefault(); // Empêche d'ouvrir "projets.html" directement
-                const menu = this.nextElementSibling;
-                // Alterne l'affichage du sous-menu
-                menu.style.display = (menu.style.display === "block") ? "none" : "block";
-            }
-        });
-    });
-</script>
-<body>
-
-    <nav class="navbar">
-        <a href="index.html" class="logo">TÉO LEFERME</a>
-        <ul class="nav-links">
-            <li><a href="index.html">Accueil</a></li>
-            <li class="dropdown">
-                <a href="projets.html" class="active">Projets ▾</a>
-                <ul class="dropdown-menu">
-                    <li><a href="navette.html">Navette Spatiale</a></li>
-                    <li><a href="drone-marin.html">Drone Marin</a></li>
-                    <li><a href="fusee.html">Fusée Expérimentale</a></li>
-                    <li><a href="autre-projets.html">Autres Projets</a></li>
-                </ul>
-            </li>
-            <li><a href="experiences.html">Expériences</a></li>
-            <li><a href="formation.html">Formation</a></li>
-            <li><a href="mailto:teo.leferme@ipsa.fr" class="btn-contact">Me Contacter</a></li>
-        </ul>
-    </nav>
-
-    <div class="container">
-        <h1 class="page-title">Drone Marin & Navigation Autonome</h1>
-
-        <!-- Grille à 2 colonnes (Texte à gauche / 3D à droite) -->
-        <div class="hero">
-            
-            <!-- Colonne de gauche : Informations du projet -->
-            <div class="card">
-                <span class="card-tag">STRUCTURE & MACHINE LEARNING </span>
-                <p style="margin-top: 15px;">
-                    Conception d'un drone sous-marin autonome guidé par image satellite 
-                </p>
-
-                <h3 style="margin-top: 20px; color:#ffffff;">Travaux réalisés par équipe :</h3>
-                <ul>
-                    <li><strong>Conception du drone sur CATIA :</strong> Dimensionnement et conception du drone / analyse de flottabilité </li>
-                    <li><strong>Machine Learning :</strong> Développement sous Python d'un modèle d'apprentissage pour la détection de marée noire</li>
-                    
-                </ul>
-                <p style="margin-top: 15px;">
-                    Le drone marin constitué d'un filtre à base de cheveux va être déposé dans la zone d'une marée noire et va agir en essaim. Un kilogramme de cheveux absorbe huit litres d'hydrocarbure, c'est donc à l'aide de cent drones qu'une marée noire va pouvoir être nettoyée à 95% dans la journée!
-                </p>
-            </div>
-
-            <!-- Colonne de droite : Visualisation 3D -->
-            <div class="card" style="display: flex; flex-direction: column; justify-content: center;">
-                <span class="card-tag">MODÈLE 3D INTERACTIF</span>
-                <h3 style="margin-bottom: 15px;">Visualisation 3D</h3>
-                
-                <model-viewer 
-                    src="ImageToStl.com_Product1.glb" 
-                    alt="Modèle 3D Drone Marin" 
-                    auto-rotate 
-                    camera-controls 
-                    shadow-intensity="2"
-                    shadow-softness="0.5"
-                    exposure="1.2"
-                    environment-image="neutral"
-                    style="width: 100%; height: 380px; background-color: #0d1117; border-radius: 8px; border: 1px solid #30363d;">
-                </model-viewer>
-            </div>
-
-        </div>
-
-        <!-- Section Galerie avec 2 photos -->
-        <div class="card gallery-section">
-            <span class="card-tag">Aperçu & Contouring</span>
-           
-            <div class="gallery-grid">
-                <div class="gallery-item">
-                    <img src="untitled.201.png" alt="Drone Marin ">
-                </div>
-                <div class="gallery-item">
-                    <img src="drone-2.png" alt="Marée noire">
-                </div>
-            </div>
-        </div>
-
-       
-        <footer>
-            <p>© 2026 Téo Leferme — Portfolio</p>
-        </footer>
-    </div>
-
-</body>
-</html>

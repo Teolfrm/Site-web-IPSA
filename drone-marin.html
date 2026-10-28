@@ -3,404 +3,151 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Drone Marin — Téo Leferme</title>
-    <link rel="stylesheet" href="./style.css">
-    
-    <!-- Script Google Model-Viewer pour la 3D (Vérifiez si une version plus récente est dispo, ex: v4.0.0) -->
-    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
-    
-    <!-- Styles spécifiques bleu IPSA (#00a8ff), galerie, et contrôles 3D -->
+    <title>Vue Éclatée du Sous-marin (Three.js)</title>
     <style>
-        :root {
-            --ipsa-blue: #00a8ff;
-            --ipsa-blue-hover: #0086cc;
-            --bg-dark: #0d1117;
-            --border-dark: #30363d;
-            --text-white: #ffffff;
-        }
-
-        .card-tag {
-            background: rgba(0, 168, 255, 0.15) !important;
-            color: var(--ipsa-blue) !important;
-        }
-        .card:hover {
-            border-color: var(--ipsa-blue) !important;
-        }
-        .btn-contact {
-            background-color: var(--ipsa-blue) !important;
-            color: var(--text-white) !important;
-        }
-        .btn-contact:hover {
-            background-color: var(--ipsa-blue-hover) !important;
-        }
-
-        /* --- STYLES GALERIE 2 IMAGES --- */
-        .gallery-section {
-            margin-top: 40px;
-            margin-bottom: 40px;
-        }
-
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .gallery-item {
-            background-color: var(--bg-dark);
-            border: 1px solid var(--border-dark);
-            border-radius: 8px;
+        body {
+            margin: 0;
             overflow: hidden;
-            height: 380px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            background-color: #0b1d3a; /* Fond bleu océan */
+            font-family: Arial, sans-serif;
         }
-
-        .gallery-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain; /* L'image s'affiche entièrement sans être coupée */
+        canvas {
+            display: block;
         }
-
-        /* --- STYLES COMPOSANTS 3D AVANCÉS --- */
-        #model-container {
-            position: relative;
-            width: 100%;
-            height: 450px; /* Légèrement plus grand pour l'éclaté */
-            background-color: var(--bg-dark);
-            border-radius: 8px;
-            border: 1px solid var(--border-dark);
-            overflow: hidden;
-        }
-
-        model-viewer {
-            width: 100%;
-            height: 100%;
-            --poster-color: transparent;
-        }
-
-        /* Panneau de contrôle en surimpression sur la 3D */
-        .controls-panel {
+        /* Style pour le curseur d'éclatement */
+        #ui-container {
             position: absolute;
-            bottom: 15px;
-            right: 15px;
-            background: rgba(13, 17, 23, 0.85);
-            border: 1px solid var(--border-dark);
-            border-radius: 8px;
-            padding: 12px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            z-index: 10;
-            backdrop-filter: blur(4px);
-            width: 220px;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.6);
+            padding: 15px 25px;
+            border-radius: 10px;
+            color: white;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
         }
-
-        .control-group {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-
-        .control-label {
-            font-size: 12px;
-            color: #8b949e;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* Style du slider d'éclatement */
-        #explode-slider {
-            width: 100%;
-            height: 6px;
-            -webkit-appearance: none;
-            background: #30363d;
-            outline: none;
-            border-radius: 3px;
-        }
-
-        #explode-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 16px;
-            height: 16px;
-            background: var(--ipsa-blue);
-            border-radius: 50%;
+        input[type=range] {
+            width: 200px;
             cursor: pointer;
-            transition: background 0.2s;
         }
-
-        #explode-slider::-webkit-slider-thumb:hover {
-            background: var(--ipsa-blue-hover);
-        }
-
-        /* Style des boutons de coloration */
-        .color-buttons {
-            display: flex;
-            gap: 8px;
-        }
-
-        .color-btn {
-            flex: 1;
-            padding: 6px;
-            background: #21262d;
-            border: 1px solid var(--border-dark);
-            border-radius: 4px;
-            color: var(--text-white);
-            font-size: 12px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .color-btn:hover {
-            background: #30363d;
-            border-color: #8b949e;
-        }
-
-        .color-btn.active {
-            background: rgba(0, 168, 255, 0.2);
-            border-color: var(--ipsa-blue);
-            color: var(--ipsa-blue);
-        }
-
     </style>
 </head>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const dropdown = document.querySelector(".dropdown > a");
-
-        if (dropdown) {
-            dropdown.addEventListener("click", function (e) {
-                // Sur mobile/tablette (< 768px)
-                if (window.innerWidth <= 768) {
-                    e.preventDefault(); // Empêche d'ouvrir "projets.html" directement
-                    const menu = this.nextElementSibling;
-                    // Alterne l'affichage du sous-menu
-                    if (menu) {
-                        menu.style.display = (menu.style.display === "block") ? "none" : "block";
-                    }
-                }
-            });
-        }
-    });
-</script>
 <body>
 
-    <nav class="navbar">
-        <a href="index.html" class="logo">TÉO LEFERME</a>
-        <ul class="nav-links">
-            <li><a href="index.html">Accueil</a></li>
-            <li class="dropdown">
-                <a href="projets.html" class="active">Projets ▾</a>
-                <ul class="dropdown-menu">
-                    <li><a href="navette.html">Navette Spatiale</a></li>
-                    <li><a href="drone-marin.html">Drone Marin</a></li>
-                    <li><a href="fusee.html">Fusée Expérimentale</a></li>
-                    <li><a href="autre-projets.html">Autres Projets</a></li>
-                </ul>
-            </li>
-            <li><a href="experiences.html">Expériences</a></li>
-            <li><a href="formation.html">Formation</a></li>
-            <li><a href="mailto:teo.leferme@ipsa.fr" class="btn-contact">Me Contacter</a></li>
-        </ul>
-    </nav>
-
-    <div class="container">
-        <h1 class="page-title">Drone Marin & Navigation Autonome</h1>
-
-        <!-- Grille à 2 colonnes (Texte à gauche / 3D avancée à droite) -->
-        <div class="hero">
-            
-            <!-- Colonne de gauche : Informations du projet -->
-            <div class="card">
-                <span class="card-tag">STRUCTURE & MACHINE LEARNING </span>
-                <p style="margin-top: 15px;">
-                    Conception d'un drone sous-marin autonome guidé par image satellite pour la détection et le nettoyage de marées noires.
-                </p>
-
-                <h3 style="margin-top: 20px; color:var(--text-white);">Travaux réalisés par équipe :</h3>
-                <ul>
-                    <li><strong>Conception du drone sur CATIA :</strong> Dimensionnement, modélisation complète et analyse de flottabilité.</li>
-                    <li><strong>Machine Learning :</strong> Développement sous Python (modèle d'apprentissage) pour la détection de marées noires via imagerie.</li>
-                </ul>
-                <p style="margin-top: 15px;">
-                    Le drone utilise un filtre innovant à base de cheveux (1 kg absorbe 8 L d'hydrocarbures). Déployés en essaim de 100 unités, ils peuvent nettoyer 95% d'une marée noire en une seule journée.
-                </p>
-            </div>
-
-            <!-- Colonne de droite : Visualisation 3D AVANCÉE (Éclaté et Coloration) -->
-            <div class="card" style="display: flex; flex-direction: column; justify-content: center; padding: 0;">
-                
-                <div id="model-container">
-                    <!-- Balise tag déplacée à l'intérieur du conteneur pour l'esthétique -->
-                    <span class="card-tag" style="position: absolute; top: 15px; left: 15px; z-index: 10;">Visualisation Technique Interactive</span>
-                    
-                    <model-viewer 
-                        id="drone-viewer"
-                        src="ImageToStl.com_Product1.glb" 
-                        alt="Modèle 3D technique du Drone Marin" 
-                        auto-rotate 
-                        camera-controls 
-                        ar
-                        shadow-intensity="1"
-                        shadow-softness="0.5"
-                        exposure="1.2"
-                        environment-image="neutral"
-                        interaction-prompt="auto"
-                        camera-orbit="45deg 75deg 10m">
-                        
-                        <!-- Panneau de contrôles techniques -->
-                        <div class="controls-panel">
-                            
-                            <!-- Contrôle 1 : Vue Éclatée -->
-                            <div class="control-group">
-                                <label class="control-label" for="explode-slider">Vue Éclatée</label>
-                                <input type="range" id="explode-slider" min="0" max="100" value="0">
-                            </div>
-
-                            <!-- Contrôle 2 : Mode de Coloration -->
-                            <div class="control-group">
-                                <label class="control-label">Mode d'Analyse</label>
-                                <div class="color-buttons">
-                                    <button class="color-btn active" id="btn-default">Réel</button>
-                                    <button class="color-btn" id="btn-tech">Technique</button>
-                                    <button class="color-btn" id="btn-flo">Flottabilité</button>
-                                </div>
-                            </div>
-
-                        </div>
-                    </model-viewer>
-                </div>
-            </div>
-
-        </div>
-
-        <!-- Section Galerie avec 2 photos -->
-        <div class="card gallery-section">
-            <span class="card-tag">Aperçu & Contouring</span>
-           
-            <div class="gallery-grid">
-                <div class="gallery-item">
-                    <img src="untitled.201.png" alt="Aperçu du modèle Drone Marin">
-                </div>
-                <div class="gallery-item">
-                    <img src="drone-2.png" alt="Analyse par contouring pour détection de marée noire">
-                </div>
-            </div>
-        </div>
-
-       
-        <footer>
-            <p>© 2026 Téo Leferme — Portfolio | IPSA</p>
-        </footer>
+    <!-- Interface utilisateur pour contrôler l'éclatement -->
+    <div id="ui-container">
+        <label for="explosionSlider"><strong>Vue Éclatée</strong></label><br>
+        <input type="range" id="explosionSlider" min="0" max="1" step="0.01" value="0">
     </div>
 
-    <!-- SCRIPT JS POUR L'INTERACTIVITÉ 3D -->
-    <script>
-        const modelViewer = document.getElementById('drone-viewer');
-        const explodeSlider = document.getElementById('explode-slider');
-        
-        // Boutons de couleur
-        const btnDefault = document.getElementById('btn-default');
-        const btnTech = document.getElementById('btn-tech');
-        const btnFlo = document.getElementById('btn-flo');
-        const colorButtons = [btnDefault, btnTech, btnFlo];
-
-        // --- 1. GESTION DE LA VUE ÉCLATÉE (EXPLODED VIEW) ---
-        // Cette fonction suppose que votre modèle GLB a des nœuds d'animation de transformation
-        // ou utilise des scènes d'animation pour l'éclatement.
-        // Si votre GLB n'a pas d'animation, ce slider n'aura pas d'effet visuel immédiat.
-        
-        modelViewer.addEventListener('load', () => {
-            // Initialiser l'état de l'animation si elle existe
-            if (modelViewer.availableAnimations.length > 0) {
-                modelViewer.animationName = modelViewer.availableAnimations[0]; // Utilise la première animation
-                modelViewer.pause(); // Reste en pause pour contrôler via le slider
+    <!-- Importation de Three.js et du chargeur GLTF via un Import Map (recommandé) -->
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
             }
+        }
+    </script>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+        // 1. Configuration de la scène, de la caméra et du renderer
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x050b14);
+
+        const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 2000);
+        camera.position.set(0, 150, 500);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // Ajout des contrôles de la caméra (permet de tourner autour du sous-marin avec la souris)
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+
+        // Éclairage de la scène
+        const ambientLight = new THREE.AmbientLight(0xffffff, 1.5);
+        scene.add(ambientLight);
+
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 2);
+        directionalLight.position.set(200, 400, 300);
+        scene.add(directionalLight);
+
+        // 2. Variables pour les pièces du sous-marin
+        let submarineParts = [];
+        const maxDistance = 250; // Distance maximale d'éloignement des pièces
+
+        // Vecteurs de direction d'éclatement pour les composants du sous-marin
+        const explosionDirections = [
+            new THREE.Vector3(0, 0, 0),     // Node1 (Centre / Coque)
+            new THREE.Vector3(0, 1, 0),     // Node2 (Tourelle / Haut)
+            new THREE.Vector3(-1, 0, 0),    // Node3 (Flanc gauche)
+            new THREE.Vector3(1, 0, 0),     // Node4 (Flanc droit)
+            new THREE.Vector3(0, 0, -1),    // Node5 (Arrière / Propulseur)
+            new THREE.Vector3(0, -1, 0)     // Node6 (Quille / Bas)
+        ];
+
+        // 3. Chargement du fichier GLB
+        const loader = new GLTFLoader();
+        // Remplacez 'votre_sous_marin.glb' par le chemin réel de votre fichier
+        loader.load('votre_sous_marin.glb', function (gltf) {
+            const model = gltf.scene;
+            scene.add(model);
+
+            let index = 0;
+            model.traverse((child) => {
+                if (child.isMesh || child.name.startsWith('Node')) {
+                    submarineParts.push({
+                        object: child,
+                        originPosition: child.position.clone(),
+                        direction: explosionDirections[index % explosionDirections.length]
+                    });
+                    index++;
+                }
+            });
+
+            console.log("Modèle chargé ! Nombre de pièces détectées :", submarineParts.length);
+        }, undefined, function (error) {
+            console.error('Erreur lors du chargement du fichier GLB :', error);
         });
 
-        explodeSlider.addEventListener('input', (event) => {
-            const value = event.target.value;
-            // On mappe la valeur 0-100 du slider à la durée 0-1 de l'animation
-            const seekTime = value / 100;
-            
-            if (modelViewer.availableAnimations.length > 0) {
-                modelViewer.currentTime = seekTime * modelViewer.duration;
-            }
-        });
-
-
-        // --- 2. GESTION DE LA COLORATION TECHNIQUE (MATERIAL OVERRIDE) ---
-        // Cette section applique des couleurs unies aux différents matériaux du modèle.
-        // Vous devrez peut-être adapter les noms des matériaux ('Hull', 'Propeller', etc.)
-        // pour qu'ils correspondent exactement à ceux définis dans votre fichier CATIA/GLB.
-
-        function setActiveButton(activeBtn) {
-            colorButtons.forEach(btn => btn.classList.remove('active'));
-            activeBtn.classList.add('active');
+        // 4. Fonction de mise à jour de l'éclatement
+        function updateExplosion(value) {
+            submarineParts.forEach((part) => {
+                const dir = part.direction;
+                part.object.position.x = part.originPosition.x + (dir.x * value * maxDistance);
+                part.object.position.y = part.originPosition.y + (dir.y * value * maxDistance);
+                part.object.position.z = part.originPosition.z + (dir.z * value * maxDistance);
+            });
         }
 
-        // Mode Réel (Couleurs d'origine du GLB)
-        btnDefault.addEventListener('click', () => {
-            setActiveButton(btnDefault);
-            modelViewer.querySelectorAll('path').forEach(p => p.removeAttribute('stroke')); // Nettoyage si besoin
-            
-            // Pour revenir au mode par défaut, on peut recharger le modèle ou 
-            // supprimer les overrides. La méthode la plus simple est de recharger :
-            const currentSrc = modelViewer.src;
-            modelViewer.src = ''; 
-            setTimeout(() => modelViewer.src = currentSrc, 10);
+        // Lier le curseur HTML à la fonction d'éclatement
+        const slider = document.getElementById('explosionSlider');
+        slider.addEventListener('input', (event) => {
+            updateExplosion(parseFloat(event.target.value));
         });
 
-        // Mode Technique (Codage couleur par sous-système - Style Satellite)
-        btnTech.addEventListener('click', async () => {
-            setActiveButton(btnTech);
-            
-            // Attendre que le modèle soit chargé
-            if (!modelViewer.loaded) return;
-
-            const materials = modelViewer.model.materials;
-            
-            // Appliquer des couleurs techniques unies (BaseColorFactor)
-            materials.forEach(material => {
-                const name = material.name.toLowerCase();
-                
-                if (name.includes('hull') || name.includes('coque')) {
-                    material.pbrMetallicRoughness.setBaseColorFactor([0.1, 0.1, 0.1, 1.0]); // Gris foncé pour la coque
-                } else if (name.includes('propeller') || name.includes('helice')) {
-                    material.pbrMetallicRoughness.setBaseColorFactor([1.0, 0.84, 0.0, 1.0]); // Or pour la propulsion
-                } else if (name.includes('sensor') || name.includes('capteur')) {
-                    material.pbrMetallicRoughness.setBaseColorFactor([0.0, 0.66, 1.0, 1.0]); // Bleu IPSA pour les capteurs
-                } else if (name.includes('battery') || name.includes('batterie')) {
-                    material.pbrMetallicRoughness.setBaseColorFactor([0.0, 1.0, 0.0, 1.0]); // Vert pour l'énergie
-                } else if (name.includes('filter') || name.includes('filtre')) {
-                    material.pbrMetallicRoughness.setBaseColorFactor([0.6, 0.3, 0.0, 1.0]); // Marron pour le filtre à cheveux
-                } else {
-                    material.pbrMetallicRoughness.setBaseColorFactor([0.5, 0.5, 0.5, 1.0]); // Gris par défaut
-                }
-            });
+        // Gestion du redimensionnement de la fenêtre
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
         });
 
-        // Mode Flottabilité (Analyse simplifiée Centre de Gravité / Centre de Carène)
-        btnFlo.addEventListener('click', async () => {
-            setActiveButton(btnFlo);
-            
-            if (!modelViewer.loaded) return;
-            const materials = modelViewer.model.materials;
-            
-            materials.forEach(material => {
-                const name = material.name.toLowerCase();
-                
-                if (name.includes('hull') || name.includes('coque')) {
-                    material.pbrMetallicRoughness.setBaseColorFactor([0.0, 0.0, 1.0, 0.5]); // Bleu transparent (volume immergé)
-                } else {
-                    material.pbrMetallicRoughness.setBaseColorFactor([1.0, 0.0, 0.0, 1.0]); // Rouge (masques des composants lourds)
-                }
-            });
-        });
+        // 5. Boucle d'animation principale
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            renderer.render(scene, camera);
+        }
 
+        animate();
     </script>
 </body>
 </html>

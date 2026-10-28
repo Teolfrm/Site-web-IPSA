@@ -298,7 +298,6 @@
         ];
 
         function init3D() {
-            // 1. Scène, Caméra & Rendu (avec correction des plans de découpe et encodage)
             scene = new THREE.Scene();
             scene.background = new THREE.Color(0x0d1117);
 
@@ -310,35 +309,30 @@
             renderer.setPixelRatio(window.devicePixelRatio);
             renderer.outputEncoding = THREE.sRGBEncoding;
 
-            // Contrôles Orbite
             controls = new THREE.OrbitControls(camera, renderer.domElement);
             controls.enableDamping = true;
             controls.dampingFactor = 0.05;
 
-            // Éclairage optimisé pour éviter les zones sombres
-            const ambientLight = new THREE.AmbientLight(0xffffff, 1.0);
+            // Éclairage adouci pour ne pas saturer les matériaux en blanc éclatant
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
             scene.add(ambientLight);
 
-            const dirLight1 = new THREE.DirectionalLight(0xffffff, 1.5);
+            const dirLight1 = new THREE.DirectionalLight(0xffffff, 0.8);
             dirLight1.position.set(200, 400, 300);
             scene.add(dirLight1);
 
-            const dirLight2 = new THREE.DirectionalLight(0x00a8ff, 0.6);
+            const dirLight2 = new THREE.DirectionalLight(0x00a8ff, 0.3);
             dirLight2.position.set(-200, -200, -200);
             scene.add(dirLight2);
 
-            // Redimensionnement dynamique
             window.addEventListener('resize', onWindowResize);
 
-            // Charger le modèle GLB du drone marin
             loadModel();
 
-            // Événements d'interaction
             explodeSlider.addEventListener('input', updateExplosion);
             toggleColorsBtn.addEventListener('click', toggleColors);
             resetViewBtn.addEventListener('click', resetView);
 
-            // Boucle d'animation
             animate();
         }
 
@@ -350,7 +344,6 @@
                 (gltf) => {
                     const model = gltf.scene;
 
-                    // Calcul du centre global et de la taille du modèle pour un cadrage parfait
                     const box = new THREE.Box3().setFromObject(model);
                     box.getCenter(modelCenter);
                     box.getCenter(controlsTarget);
@@ -368,31 +361,30 @@
 
                     model.traverse((child) => {
                         if (child.isMesh) {
-                            // Cloner le matériau d'origine pour préserver l'aspect de base
+                            // Sauvegarde du matériau d'origine du fichier GLB
                             const originalMaterial = child.material.clone();
-                            
-                            // Calcul du centre individuel de la pièce pour l'éclatement
+
+                            // Création du matériau coloré de la palette
+                            const colorHex = palette[colorIndex % palette.length];
+                            colorIndex++;
+                            const distinctMaterial = new THREE.MeshStandardMaterial({
+                                color: colorHex,
+                                roughness: 0.4,
+                                metalness: 0.1
+                            });
+
+                            // Calcul de la direction d'éclatement
                             child.geometry.computeBoundingBox();
                             const meshBox = child.geometry.boundingBox.clone();
                             meshBox.applyMatrix4(child.matrixWorld);
                             const meshCenter = new THREE.Vector3();
                             meshBox.getCenter(meshCenter);
 
-                            // Calcul de la direction d'éclatement (depuis le centre du modèle vers la pièce)
                             let explodeDir = new THREE.Vector3().subVectors(meshCenter, modelCenter);
                             if (explodeDir.length() === 0) {
                                 explodeDir.set(Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5);
                             }
                             explodeDir.normalize();
-
-                            // Création du matériau coloré distinct
-                            const colorHex = palette[colorIndex % palette.length];
-                            colorIndex++;
-                            const distinctMaterial = new THREE.MeshStandardMaterial({
-                                color: colorHex,
-                                roughness: 0.3,
-                                metalness: 0.2
-                            });
 
                             pieces.push({
                                 mesh: child,
@@ -404,13 +396,10 @@
                         }
                     });
 
-                    // Masquer l'écran de chargement
                     loadingOverlay.style.opacity = '0';
                     setTimeout(() => loadingOverlay.style.display = 'none', 400);
                 },
-                (xhr) => {
-                    // Progression du chargement (optionnel)
-                },
+                undefined,
                 (error) => {
                     console.error('Erreur lors du chargement du fichier GLB :', error);
                     loadingOverlay.querySelector('span').innerText = 'Erreur de chargement du modèle 3D';
@@ -420,7 +409,7 @@
 
         function updateExplosion() {
             const progress = parseFloat(explodeSlider.value) / 100;
-            const maxDistance = 150; // Distance maximale d'écartement
+            const maxDistance = 150;
 
             pieces.forEach(p => {
                 p.mesh.position.x = p.originalPosition.x + (p.direction.x * progress * maxDistance);
@@ -435,6 +424,7 @@
             toggleColorsBtn.style.color = isColorized ? '#ffffff' : '#00a8ff';
             toggleColorsBtn.innerText = isColorized ? 'Couleurs d\'origine' : 'Couleurs distinctes';
 
+            // Alterne entre le matériau d'origine du GLB et la palette colorée
             pieces.forEach(p => {
                 p.mesh.material = isColorized ? p.distinctMaterial : p.originalMaterial;
             });
@@ -460,7 +450,6 @@
             renderer.render(scene, camera);
         }
 
-        // Lancement au chargement de la page
         init3D();
     </script>
 </body>
